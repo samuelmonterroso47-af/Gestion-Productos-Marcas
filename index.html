@@ -1,51 +1,150 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulo de Evaluación 3WH</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Ventas Modular</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="p-4 md:p-8">
 
 <div class="flex flex-col md:flex-row items-center justify-between mb-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Evaluación de Mercado (3WH Mototaxis)</h1>
-    <div class="flex items-center space-x-2 text-sm text-gray-500">
-        <span>ID de Usuario:</span>
-        <span id="userIdDisplay" class="font-mono bg-gray-200 px-2 py-1 rounded-lg break-all">Cargando...</span>
-    </div>
+    <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Dashboard de Ventas</h1>
+    <div class="flex items-center space-x-2 text-sm text-gray-500">
+        <span>ID de Usuario:</span>
+        <span id="userIdDisplay" class="font-mono bg-gray-200 px-2 py-1 rounded-lg break-all">Cargando...</span>
+    </div>
 </div>
 
 <div class="container-card mx-auto">
-        <div id="module-1" class="module-content">
-        <div id="module1-filters" class="flex flex-wrap items-center gap-4 mb-4">
-            <label class="block text-sm font-medium text-gray-700">Participación Baja (%):</label>
-            <input type="number" id="marketShareThreshold" value="20" min="0" max="100" class="w-24 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <label class="block text-sm font-medium text-gray-700">Municipio:</label>
-            <select id="municipio3WHFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todos</option>
-            </select>
-        </div>
-        <div id="module1-content" class="overflow-x-auto">
-            <p id="loading-1" class="text-center text-gray-500">Cargando datos...</p>
-        </div>
-        <button onclick="exportData('module1')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
-            Exportar a CSV
-        </button>
-    </div>
+    <!-- Navegación de pestañas -->
+    <div class="flex flex-wrap space-x-2 md:space-x-4 border-b border-gray-300 mb-6">
+        <button id="tab-1" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none active">
+            1. Evaluación 3WH
+        </button>
+        <button id="tab-1-1" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
+            1.1. Evaluación 2WH
+        </button>
+        <button id="tab-2" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
+            2. Promedios de Clientes
+        </button>
+        <button id="tab-3" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
+            3. Recuperación de Marcas
+        </button>
+        <button id="tab-4" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
+            4. Recuperación de Códigos
+        </button>
+    </div>
+
+    <!-- Módulos de contenido -->
+    <div id="module-1" class="module-content active">
+        <h2 class="text-xl font-semibold mb-4">Evaluación de Mercado (3WH Mototaxis)</h2>
+        <div id="module1-filters" class="flex flex-wrap items-center gap-4 mb-4">
+            <label class="block text-sm font-medium text-gray-700">Participación Baja (%):</label>
+            <input type="number" id="marketShareThreshold" value="20" min="0" max="100" class="w-24 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label class="block text-sm font-medium text-gray-700">Municipio:</label>
+            <select id="municipio3WHFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Todos</option>
+            </select>
+        </div>
+        <div id="module1-content" class="overflow-x-auto">
+            <p id="loading-1" class="text-center text-gray-500">Cargando datos...</p>
+        </div>
+        <button onclick="exportData('module1')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
+            Exportar a CSV
+        </button>
+    </div>
+
+    <div id="module-1-1" class="module-content">
+        <h2 class="text-xl font-semibold mb-4">Evaluación de Mercado (2WH)</h2>
+        <div id="module1-1-filters" class="flex flex-wrap items-center gap-4 mb-4">
+            <label class="block text-sm font-medium text-gray-700">Ventas Promedio &lt; 10,000:</label>
+            <label class="block text-sm font-medium text-gray-700">Municipio:</label>
+            <select id="municipio2WHFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Todos</option>
+            </select>
+        </div>
+        <div id="module1-1-content" class="overflow-x-auto">
+            <p id="loading-1-1" class="text-center text-gray-500">Cargando datos...</p>
+        </div>
+        <button onclick="exportData('module1-1')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
+            Exportar a CSV
+        </button>
+    </div>
+
+    <div id="module-2" class="module-content">
+        <h2 class="text-xl font-semibold mb-4">Promedios de Clientes</h2>
+        <div id="module2-filters" class="flex flex-wrap items-center gap-4 mb-4">
+            <label class="block text-sm font-medium text-gray-700">Cliente:</label>
+            <select id="clientePromedioFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Todos</option>
+            </select>
+        </div>
+        <div id="module2-content" class="overflow-x-auto">
+            <p id="loading-2" class="text-center text-gray-500">Cargando datos...</p>
+        </div>
+        <button onclick="exportData('module2')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
+            Exportar a CSV
+        </button>
+    </div>
+
+    <div id="module-3" class="module-content">
+        <h2 class="text-xl font-semibold mb-4">Recuperación de Marcas</h2>
+        <div id="module3-filters" class="flex flex-wrap items-center gap-4 mb-4">
+            <label class="block text-sm font-medium text-gray-700">Cliente:</label>
+            <select id="clienteMarcaFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Todos</option>
+            </select>
+            <label class="block text-sm font-medium text-gray-700">Marca:</label>
+            <select id="marcaFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Todas</option>
+                <option value="GTS">GTS</option>
+                <option value="CEAT">CEAT</option>
+                <option value="LIYANG">LIYANG</option>
+                <option value="KOLBEN">KOLBEN</option>
+                <option value="MTP">MTP</option>
+            </select>
+        </div>
+        <div id="module3-content" class="overflow-x-auto">
+            <p id="loading-3" class="text-center text-gray-500">Cargando datos...</p>
+        </div>
+        <button onclick="exportData('module3')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
+            Exportar a CSV
+        </button>
+    </div>
+
+    <div id="module-4" class="module-content">
+        <h2 class="text-xl font-semibold mb-4">Recuperación de Códigos</h2>
+        <div id="module4-filters" class="flex flex-wrap items-center gap-4 mb-4">
+            <label class="block text-sm font-medium text-gray-700">Cliente:</label>
+            <select id="clienteCodigoFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Todos</option>
+            </select>
+            <label class="block text-sm font-medium text-gray-700">Código Original:</label>
+            <select id="codigoOriginalFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Todos</option>
+            </select>
+        </div>
+        <div id="module4-content" class="overflow-x-auto">
+            <p id="loading-4" class="text-center text-gray-500">Cargando datos...</p>
+        </div>
+        <button onclick="exportData('module4')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
+            Exportar a CSV
+        </button>
+    </div>
 </div>
 
+<!-- Modal para mensajes -->
 <div id="message-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeModal()">&times;</span>
-        <h3 class="text-lg font-bold mb-2">Notificación</h3>
-        <p id="modal-message"></p>
-    </div>
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <h3 class="text-lg font-bold mb-2">Notificación</h3>
+        <p id="modal-message"></p>
+    </div>
 </div>
 
 <script type="module" src="app.js"></script>
-
 </body>
 </html>
