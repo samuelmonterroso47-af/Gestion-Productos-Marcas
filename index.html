@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Ventas Modular - Corregido</title>
+    <title>Dashboard de Ventas con Filtros</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -29,40 +29,6 @@
         }
         .module-content.active {
             display: block;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            padding: 20px;
-            border-radius: 0.75rem;
-            width: 80%;
-            max-width: 500px;
-            position: relative;
-        }
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        @media (min-width: 768px) {
-            .container-card {
-                max-width: 1200px;
-            }
         }
         .dashboard-header {
             background: linear-gradient(90deg, #4f46e5, #7c3aed);
@@ -98,6 +64,7 @@
             border-radius: 0.375rem;
             font-weight: 600;
             transition: background-color 0.3s;
+            margin-top: 1rem;
         }
         .export-btn:hover {
             background-color: #059669;
@@ -107,6 +74,39 @@
             padding: 1rem;
             border-radius: 0.5rem;
             margin-bottom: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .apply-btn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .apply-btn:hover {
+            background-color: #2563eb;
+        }
+        .filter-input {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            width: 100px;
+        }
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
         }
     </style>
 </head>
@@ -129,34 +129,38 @@
             1. Evaluación 3WH
         </button>
         <button id="tab-2" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
-            1.1. Evaluación 2WH
-        </button>
-        <button id="tab-3" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
             2. Promedios de Clientes
         </button>
-        <button id="tab-4" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
+        <button id="tab-3" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
             3. Recuperación de Marcas
         </button>
-        <button id="tab-5" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
+        <button id="tab-4" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
             4. Recuperación de Códigos
         </button>
     </div>
 
-    <!-- Módulos de contenido -->
+    <!-- Módulo 1: Evaluación 3WH -->
     <div id="module-1" class="module-content active">
         <h2 class="text-xl font-semibold mb-4">Evaluación de Mercado (3WH Mototaxis)</h2>
         
-        <div class="filter-section flex flex-wrap items-center gap-4 mb-4">
-            <label class="block text-sm font-medium text-gray-700">Participación Baja (%):</label>
-            <input type="number" id="marketShareThreshold" value="20" min="0" max="100" class="w-24 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <label class="block text-sm font-medium text-gray-700">Municipio:</label>
-            <select id="municipio3WHFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todos</option>
-                <option value="Quetzaltenango">Quetzaltenango</option>
-                <option value="Huehuetenango">Huehuetenango</option>
-                <option value="Cobán">Cobán</option>
-                <option value="Ciudad de Guatemala">Ciudad de Guatemala</option>
-            </select>
+        <div class="filter-section">
+            <div class="filter-group">
+                <label class="block text-sm font-medium text-gray-700">Participación Baja (%):</label>
+                <input type="number" id="marketShareThreshold" value="20" min="0" max="100" class="filter-input">
+            </div>
+            
+            <div class="filter-group">
+                <label class="block text-sm font-medium text-gray-700">Municipio:</label>
+                <select id="municipio3WHFilter" class="filter-select">
+                    <option value="">Todos</option>
+                    <option value="Quetzaltenango">Quetzaltenango</option>
+                    <option value="Huehuetenango">Huehuetenango</option>
+                    <option value="Cobán">Cobán</option>
+                    <option value="Ciudad de Guatemala">Ciudad de Guatemala</option>
+                </select>
+            </div>
+            
+            <button id="applyFilter1" class="apply-btn">Aplicar Filtros</button>
         </div>
         
         <div id="module1-content" class="overflow-x-auto">
@@ -170,99 +174,36 @@
                         <th>Recomendación</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Quetzaltenango</td>
-                        <td>$500,000</td>
-                        <td>1,500</td>
-                        <td>33.33%</td>
-                        <td>Mantener o expandir</td>
-                    </tr>
-                    <tr>
-                        <td>Huehuetenango</td>
-                        <td>$800,000</td>
-                        <td>2,000</td>
-                        <td>40.00%</td>
-                        <td>Mantener o expandir</td>
-                    </tr>
-                    <tr>
-                        <td>Cobán</td>
-                        <td>$100,000</td>
-                        <td>1,000</td>
-                        <td>10.00%</td>
-                        <td class="text-red-600 font-semibold">Enfocar en este municipio</td>
-                    </tr>
+                <tbody id="table-body-1">
+                    <!-- Los datos se cargarán dinámicamente -->
                 </tbody>
             </table>
         </div>
         
-        <button class="export-btn mt-4">
+        <button class="export-btn" onclick="exportData('module1')">
             Exportar a CSV
         </button>
     </div>
 
+    <!-- Módulo 2: Promedios de Clientes -->
     <div id="module-2" class="module-content">
-        <h2 class="text-xl font-semibold mb-4">Evaluación de Mercado (2WH)</h2>
+        <h2 class="text-xl font-semibold mb-4">Promedios de Clientes</h2>
         
-        <div class="filter-section flex flex-wrap items-center gap-4 mb-4">
-            <label class="block text-sm font-medium text-gray-700">Municipio:</label>
-            <select id="municipio2WHFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todos</option>
-                <option value="Quetzaltenango">Quetzaltenango</option>
-                <option value="Huehuetenango">Huehuetenango</option>
-                <option value="Cobán">Cobán</option>
-                <option value="Ciudad de Guatemala">Ciudad de Guatemala</option>
-            </select>
+        <div class="filter-section">
+            <div class="filter-group">
+                <label class="block text-sm font-medium text-gray-700">Cliente:</label>
+                <select id="clientePromedioFilter" class="filter-select">
+                    <option value="">Todos</option>
+                    <option value="cliente_1">Cliente 1</option>
+                    <option value="cliente_2">Cliente 2</option>
+                    <option value="cliente_3">Cliente 3</option>
+                </select>
+            </div>
+            
+            <button id="applyFilter2" class="apply-btn">Aplicar Filtros</button>
         </div>
         
         <div id="module2-content" class="overflow-x-auto">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Municipio</th>
-                        <th>Ventas Promedio</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Quetzaltenango</td>
-                        <td>$12,500</td>
-                        <td class="text-green-600">Normal</td>
-                    </tr>
-                    <tr>
-                        <td>Huehuetenango</td>
-                        <td>$15,800</td>
-                        <td class="text-green-600">Normal</td>
-                    </tr>
-                    <tr>
-                        <td>Cobán</td>
-                        <td>$7,200</td>
-                        <td class="text-red-600 font-semibold">Por debajo de Q.10,000</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <button class="export-btn mt-4">
-            Exportar a CSV
-        </button>
-    </div>
-
-    <div id="module-3" class="module-content">
-        <h2 class="text-xl font-semibold mb-4">Promedios de Clientes</h2>
-        
-        <div class="filter-section flex flex-wrap items-center gap-4 mb-4">
-            <label class="block text-sm font-medium text-gray-700">Cliente:</label>
-            <select id="clientePromedioFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todos</option>
-                <option value="cliente_1">Cliente 1</option>
-                <option value="cliente_2">Cliente 2</option>
-                <option value="cliente_3">Cliente 3</option>
-            </select>
-        </div>
-        
-        <div id="module3-content" class="overflow-x-auto">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -272,57 +213,48 @@
                         <th>Tendencia</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Cliente 1</td>
-                        <td>$55,000</td>
-                        <td>$70,000</td>
-                        <td class="text-red-600 font-semibold">A la baja</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 2</td>
-                        <td>$125,000</td>
-                        <td>$110,000</td>
-                        <td class="text-green-600">En aumento</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>$11,500</td>
-                        <td>$20,000</td>
-                        <td class="text-red-600 font-semibold">A la baja</td>
-                    </tr>
+                <tbody id="table-body-2">
+                    <!-- Los datos se cargarán dinámicamente -->
                 </tbody>
             </table>
         </div>
         
-        <button class="export-btn mt-4">
+        <button class="export-btn" onclick="exportData('module2')">
             Exportar a CSV
         </button>
     </div>
 
-    <div id="module-4" class="module-content">
+    <!-- Módulo 3: Recuperación de Marcas -->
+    <div id="module-3" class="module-content">
         <h2 class="text-xl font-semibold mb-4">Recuperación de Marcas</h2>
         
-        <div class="filter-section flex flex-wrap items-center gap-4 mb-4">
-            <label class="block text-sm font-medium text-gray-700">Cliente:</label>
-            <select id="clienteMarcaFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todos</option>
-                <option value="cliente_1">Cliente 1</option>
-                <option value="cliente_2">Cliente 2</option>
-                <option value="cliente_3">Cliente 3</option>
-            </select>
-            <label class="block text-sm font-medium text-gray-700">Marca:</label>
-            <select id="marcaFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todas</option>
-                <option value="GTS">GTS</option>
-                <option value="CEAT">CEAT</option>
-                <option value="LIYANG">LIYANG</option>
-                <option value="KOLBEN">KOLBEN</option>
-                <option value="MTP">MTP</option>
-            </select>
+        <div class="filter-section">
+            <div class="filter-group">
+                <label class="block text-sm font-medium text-gray-700">Cliente:</label>
+                <select id="clienteMarcaFilter" class="filter-select">
+                    <option value="">Todos</option>
+                    <option value="cliente_1">Cliente 1</option>
+                    <option value="cliente_2">Cliente 2</option>
+                    <option value="cliente_3">Cliente 3</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="block text-sm font-medium text-gray-700">Marca:</label>
+                <select id="marcaFilter" class="filter-select">
+                    <option value="">Todas</option>
+                    <option value="GTS">GTS</option>
+                    <option value="CEAT">CEAT</option>
+                    <option value="LIYANG">LIYANG</option>
+                    <option value="KOLBEN">KOLBEN</option>
+                    <option value="MTP">MTP</option>
+                </select>
+            </div>
+            
+            <button id="applyFilter3" class="apply-btn">Aplicar Filtros</button>
         </div>
         
-        <div id="module4-content" class="overflow-x-auto">
+        <div id="module3-content" class="overflow-x-auto">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -332,55 +264,46 @@
                         <th>Días Transcurridos</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Cliente 1</td>
-                        <td>GTS</td>
-                        <td>2025-05-20</td>
-                        <td>120</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>LIYANG</td>
-                        <td>2025-03-20</td>
-                        <td>180</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>KOLBEN</td>
-                        <td>2025-06-25</td>
-                        <td>85</td>
-                    </tr>
+                <tbody id="table-body-3">
+                    <!-- Los datos se cargarán dinámicamente -->
                 </tbody>
             </table>
         </div>
         
-        <button class="export-btn mt-4">
+        <button class="export-btn" onclick="exportData('module3')">
             Exportar a CSV
         </button>
     </div>
 
-    <div id="module-5" class="module-content">
+    <!-- Módulo 4: Recuperación de Códigos -->
+    <div id="module-4" class="module-content">
         <h2 class="text-xl font-semibold mb-4">Recuperación de Códigos</h2>
         
-        <div class="filter-section flex flex-wrap items-center gap-4 mb-4">
-            <label class="block text-sm font-medium text-gray-700">Cliente:</label>
-            <select id="clienteCodigoFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todos</option>
-                <option value="cliente_1">Cliente 1</option>
-                <option value="cliente_2">Cliente 2</option>
-                <option value="cliente_3">Cliente 3</option>
-            </select>
-            <label class="block text-sm font-medium text-gray-700">Código Original:</label>
-            <select id="codigoOriginalFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todos</option>
-                <option value="A101">A101</option>
-                <option value="B202">B202</option>
-                <option value="C303">C303</option>
-            </select>
+        <div class="filter-section">
+            <div class="filter-group">
+                <label class="block text-sm font-medium text-gray-700">Cliente:</label>
+                <select id="clienteCodigoFilter" class="filter-select">
+                    <option value="">Todos</option>
+                    <option value="cliente_1">Cliente 1</option>
+                    <option value="cliente_2">Cliente 2</option>
+                    <option value="cliente_3">Cliente 3</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="block text-sm font-medium text-gray-700">Código Original:</label>
+                <select id="codigoOriginalFilter" class="filter-select">
+                    <option value="">Todos</option>
+                    <option value="A101">A101</option>
+                    <option value="B202">B202</option>
+                    <option value="C303">C303</option>
+                </select>
+            </div>
+            
+            <button id="applyFilter4" class="apply-btn">Aplicar Filtros</button>
         </div>
         
-        <div id="module5-content" class="overflow-x-auto">
+        <div id="module4-content" class="overflow-x-auto">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -391,48 +314,45 @@
                         <th>Validado</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Cliente 1</td>
-                        <td>A101</td>
-                        <td>2025-05-20</td>
-                        <td>A102</td>
-                        <td class="text-green-600">Sí</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 2</td>
-                        <td>B202</td>
-                        <td>2025-06-10</td>
-                        <td>B203</td>
-                        <td class="text-red-600">No</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>C303</td>
-                        <td>2025-03-20</td>
-                        <td>C304</td>
-                        <td class="text-green-600">Sí</td>
-                    </tr>
+                <tbody id="table-body-4">
+                    <!-- Los datos se cargarán dinámicamente -->
                 </tbody>
             </table>
         </div>
         
-        <button class="export-btn mt-4">
+        <button class="export-btn" onclick="exportData('module4')">
             Exportar a CSV
         </button>
     </div>
 </div>
 
-<!-- Modal para mensajes -->
-<div id="message-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeModal()">&times;</span>
-        <h3 class="text-lg font-bold mb-2">Notificación</h3>
-        <p id="modal-message"></p>
-    </div>
-</div>
-
 <script>
+    // Datos de ejemplo
+    const datos3WH = [
+        { municipio: 'Quetzaltenango', ventas: 500000, mototaxis: 1500, participacion: 33.33 },
+        { municipio: 'Huehuetenango', ventas: 800000, mototaxis: 2000, participacion: 40.00 },
+        { municipio: 'Cobán', ventas: 100000, mototaxis: 1000, participacion: 10.00 },
+        { municipio: 'Ciudad de Guatemala', ventas: 2500000, mototaxis: 5000, participacion: 50.00 }
+    ];
+
+    const datosClientes = [
+        { cliente: 'Cliente 1', promedioActual: 55000, promedioHistorico: 70000 },
+        { cliente: 'Cliente 2', promedioActual: 125000, promedioHistorico: 110000 },
+        { cliente: 'Cliente 3', promedioActual: 11500, promedioHistorico: 20000 }
+    ];
+
+    const datosMarcas = [
+        { cliente: 'Cliente 1', marca: 'GTS', ultimaCompra: '2025-05-20', diasTranscurridos: 120 },
+        { cliente: 'Cliente 3', marca: 'LIYANG', ultimaCompra: '2025-03-20', diasTranscurridos: 180 },
+        { cliente: 'Cliente 3', marca: 'KOLBEN', ultimaCompra: '2025-06-25', diasTranscurridos: 85 }
+    ];
+
+    const datosCodigos = [
+        { cliente: 'Cliente 1', codigoAbandonado: 'A101', ultimaCompra: '2025-05-20', codigoAlterno: 'A102', validado: 'Sí' },
+        { cliente: 'Cliente 2', codigoAbandonado: 'B202', ultimaCompra: '2025-06-10', codigoAlterno: 'B203', validado: 'No' },
+        { cliente: 'Cliente 3', codigoAbandonado: 'C303', ultimaCompra: '2025-03-20', codigoAlterno: 'C304', validado: 'Sí' }
+    ];
+
     // Función para cambiar entre pestañas
     function switchTab(tabId) {
         // Ocultar todos los módulos
@@ -453,36 +373,148 @@
         document.getElementById(`module-${moduleNumber}`).classList.add('active');
     }
 
-    // Agregar event listeners a las pestañas
-    document.addEventListener('DOMContentLoaded', function() {
-        const tabs = document.querySelectorAll('.tab-button');
+    // Función para aplicar filtros al módulo 1
+    function aplicarFiltrosModulo1() {
+        const participacionMinima = parseFloat(document.getElementById('marketShareThreshold').value) || 0;
+        const municipioFiltro = document.getElementById('municipio3WHFilter').value;
         
+        const tbody = document.getElementById('table-body-1');
+        tbody.innerHTML = '';
+        
+        datos3WH.forEach(item => {
+            // Aplicar filtros
+            if (municipioFiltro && item.municipio !== municipioFiltro) return;
+            if (item.participacion >= participacionMinima) return;
+            
+            // Determinar recomendación
+            const recomendacion = item.participacion < 20 ? 'Enfocar en este municipio' : 'Mantener o expandir';
+            
+            // Agregar fila a la tabla
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.municipio}</td>
+                <td>$${item.ventas.toLocaleString('es-GT')}</td>
+                <td>${item.mototaxis.toLocaleString('es-GT')}</td>
+                <td>${item.participacion.toFixed(2)}%</td>
+                <td class="${item.participacion < 20 ? 'text-red-600 font-semibold' : ''}">${recomendacion}</td>
+            `;
+            tbody.appendChild(row);
+        });
+        
+        // Si no hay resultados
+        if (tbody.children.length === 0) {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td colspan="5" class="text-center py-4 text-gray-500">No se encontraron datos con los filtros aplicados</td>`;
+            tbody.appendChild(row);
+        }
+    }
+
+    // Función para aplicar filtros al módulo 2
+    function aplicarFiltrosModulo2() {
+        const clienteFiltro = document.getElementById('clientePromedioFilter').value;
+        
+        const tbody = document.getElementById('table-body-2');
+        tbody.innerHTML = '';
+        
+        datosClientes.forEach(item => {
+            // Aplicar filtros
+            if (clienteFiltro && item.cliente !== clienteFiltro) return;
+            
+            // Determinar tendencia
+            const tendencia = item.promedioActual < item.promedioHistorico ? 'A la baja' : 'En aumento';
+            
+            // Agregar fila a la tabla
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.cliente}</td>
+                <td>$${item.promedioActual.toLocaleString('es-GT')}</td>
+                <td>$${item.promedioHistorico.toLocaleString('es-GT')}</td>
+                <td class="${item.promedioActual < item.promedioHistorico ? 'text-red-600 font-semibold' : 'text-green-600'}">${tendencia}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Función para aplicar filtros al módulo 3
+    function aplicarFiltrosModulo3() {
+        const clienteFiltro = document.getElementById('clienteMarcaFilter').value;
+        const marcaFiltro = document.getElementById('marcaFilter').value;
+        
+        const tbody = document.getElementById('table-body-3');
+        tbody.innerHTML = '';
+        
+        datosMarcas.forEach(item => {
+            // Aplicar filtros
+            if (clienteFiltro && item.cliente !== clienteFiltro) return;
+            if (marcaFiltro && item.marca !== marcaFiltro) return;
+            
+            // Agregar fila a la tabla
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.cliente}</td>
+                <td>${item.marca}</td>
+                <td>${item.ultimaCompra}</td>
+                <td>${item.diasTranscurridos}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Función para aplicar filtros al módulo 4
+    function aplicarFiltrosModulo4() {
+        const clienteFiltro = document.getElementById('clienteCodigoFilter').value;
+        const codigoFiltro = document.getElementById('codigoOriginalFilter').value;
+        
+        const tbody = document.getElementById('table-body-4');
+        tbody.innerHTML = '';
+        
+        datosCodigos.forEach(item => {
+            // Aplicar filtros
+            if (clienteFiltro && item.cliente !== clienteFiltro) return;
+            if (codigoFiltro && item.codigoAbandonado !== codigoFiltro) return;
+            
+            // Agregar fila a la tabla
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.cliente}</td>
+                <td>${item.codigoAbandonado}</td>
+                <td>${item.ultimaCompra}</td>
+                <td>${item.codigoAlterno}</td>
+                <td class="${item.validado === 'Sí' ? 'text-green-600' : 'text-red-600'}">${item.validado}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Función para exportar datos (simulada)
+    function exportData(moduleId) {
+        alert(`Función de exportación para ${moduleId} sería implementada aquí.`);
+    }
+
+    // Inicialización cuando el DOM está cargado
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configurar event listeners para las pestañas
+        const tabs = document.querySelectorAll('.tab-button');
         tabs.forEach(tab => {
             tab.addEventListener('click', function() {
                 switchTab(this.id);
             });
         });
         
+        // Configurar event listeners para los botones de aplicar filtros
+        document.getElementById('applyFilter1').addEventListener('click', aplicarFiltrosModulo1);
+        document.getElementById('applyFilter2').addEventListener('click', aplicarFiltrosModulo2);
+        document.getElementById('applyFilter3').addEventListener('click', aplicarFiltrosModulo3);
+        document.getElementById('applyFilter4').addEventListener('click', aplicarFiltrosModulo4);
+        
+        // Cargar datos iniciales
+        aplicarFiltrosModulo1();
+        aplicarFiltrosModulo2();
+        aplicarFiltrosModulo3();
+        aplicarFiltrosModulo4();
+        
         // Simular datos de usuario
         document.getElementById('userIdDisplay').textContent = "UsuarioDemo123";
-    });
-
-    // Función para mostrar modal
-    function showModal(message) {
-        document.getElementById('modal-message').textContent = message;
-        document.getElementById('message-modal').style.display = 'flex';
-    }
-
-    // Función para cerrar modal
-    function closeModal() {
-        document.getElementById('message-modal').style.display = 'none';
-    }
-
-    // Simular funcionalidad de exportación
-    document.querySelectorAll('.export-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            showModal('Función de exportación simulada. En una implementación real, se generarían los datos CSV.');
-        });
     });
 </script>
 
