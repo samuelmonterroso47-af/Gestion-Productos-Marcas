@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo de Evaluación 3WH</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="p-4 md:p-8">
+
+<div class="flex flex-col md:flex-row items-center justify-between mb-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Evaluación de Mercado (3WH Mototaxis)</h1>
+    <div class="flex items-center space-x-2 text-sm text-gray-500">
+        <span>ID de Usuario:</span>
+        <span id="userIdDisplay" class="font-mono bg-gray-200 px-2 py-1 rounded-lg break-all">Cargando...</span>
+    </div>
+</div>
+
+<div class="container-card mx-auto">
+        <div id="module-1" class="module-content">
+        <div id="module1-filters" class="flex flex-wrap items-center gap-4 mb-4">
+            <label class="block text-sm font-medium text-gray-700">Participación Baja (%):</label>
+            <input type="number" id="marketShareThreshold" value="20" min="0" max="100" class="w-24 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label class="block text-sm font-medium text-gray-700">Municipio:</label>
+            <select id="municipio3WHFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Todos</option>
+            </select>
+        </div>
+        <div id="module1-content" class="overflow-x-auto">
+            <p id="loading-1" class="text-center text-gray-500">Cargando datos...</p>
+        </div>
+        <button onclick="exportData('module1')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
+            Exportar a CSV
+        </button>
+    </div>
+</div>
+
+<div id="message-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <h3 class="text-lg font-bold mb-2">Notificación</h3>
+        <p id="modal-message"></p>
+    </div>
+</div>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
