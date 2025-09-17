@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Ventas con Filtros</title>
+    <title>Dashboard de Ventas - Recuperación de Códigos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
         }
-        .tab-button.active {
-            background-color: #1f2937;
-            color: #ffffff;
-            font-weight: 600;
+        .dashboard-header {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
         }
         .container-card {
             background-color: #ffffff;
@@ -23,19 +26,6 @@
             padding: 2rem;
             max-width: 95%;
             margin-top: 2rem;
-        }
-        .module-content {
-            display: none;
-        }
-        .module-content.active {
-            display: block;
-        }
-        .dashboard-header {
-            background: linear-gradient(90deg, #4f46e5, #7c3aed);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1.5rem;
         }
         .data-table {
             width: 100%;
@@ -69,7 +59,7 @@
         .export-btn:hover {
             background-color: #059669;
         }
-        .filter-section {
+        .search-section {
             background-color: #f9fafb;
             padding: 1rem;
             border-radius: 0.5rem;
@@ -79,14 +69,12 @@
             gap: 1rem;
             align-items: center;
         }
-        .filter-group {
+        .search-group {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        .apply-btn {
-            background-color: #3b82f6;
-            color: white;
+        .action-btn {
             padding: 0.5rem 1rem;
             border-radius: 0.375rem;
             font-weight: 600;
@@ -94,19 +82,88 @@
             border: none;
             cursor: pointer;
         }
-        .apply-btn:hover {
+        .primary-btn {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .primary-btn:hover {
             background-color: #2563eb;
         }
-        .filter-input {
+        .success-btn {
+            background-color: #10b981;
+            color: white;
+        }
+        .success-btn:hover {
+            background-color: #059669;
+        }
+        .search-input {
             padding: 0.5rem;
             border: 1px solid #d1d5db;
             border-radius: 0.375rem;
-            width: 100px;
+            width: 200px;
         }
         .filter-select {
             padding: 0.5rem;
             border: 1px solid #d1d5db;
             border-radius: 0.375rem;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border-radius: 0.75rem;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .alternate-code-badge {
+            display: inline-block;
+            background-color: #e5e7eb;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            margin: 0.25rem;
+            font-size: 0.875rem;
+        }
+        .alternate-code-badge .remove-btn {
+            margin-left: 0.5rem;
+            color: #ef4444;
+            cursor: pointer;
+        }
+        .continuity-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        .good-continuity {
+            background-color: #10b981;
+        }
+        .partial-continuity {
+            background-color: #f59e0b;
+        }
+        .no-continuity {
+            background-color: #ef4444;
         }
     </style>
 </head>
@@ -114,7 +171,7 @@
 
 <div class="dashboard-header">
     <div class="flex flex-col md:flex-row items-center justify-between">
-        <h1 class="text-3xl font-bold mb-4 md:mb-0">Dashboard de Ventas</h1>
+        <h1 class="text-3xl font-bold mb-4 md:mb-0">Dashboard de Ventas - Recuperación de Códigos</h1>
         <div class="flex items-center space-x-2 text-sm bg-white/20 px-3 py-1 rounded-lg">
             <span>ID de Usuario:</span>
             <span id="userIdDisplay" class="font-mono break-all">UsuarioDemo123</span>
@@ -123,164 +180,21 @@
 </div>
 
 <div class="container-card mx-auto">
-    <!-- Navegación de pestañas -->
-    <div class="flex flex-wrap space-x-2 md:space-x-4 border-b border-gray-300 mb-6">
-        <button id="tab-1" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none active">
-            1. Evaluación 3WH
-        </button>
-        <button id="tab-2" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
-            2. Promedios de Clientes
-        </button>
-        <button id="tab-3" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
-            3. Recuperación de Marcas
-        </button>
-        <button id="tab-4" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
-            4. Recuperación de Códigos
-        </button>
-    </div>
-
-    <!-- Módulo 1: Evaluación 3WH -->
-    <div id="module-1" class="module-content active">
-        <h2 class="text-xl font-semibold mb-4">Evaluación de Mercado (3WH Mototaxis)</h2>
-        
-        <div class="filter-section">
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Participación Baja (%):</label>
-                <input type="number" id="marketShareThreshold" value="20" min="0" max="100" class="filter-input">
-            </div>
-            
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Municipio:</label>
-                <select id="municipio3WHFilter" class="filter-select">
-                    <option value="">Todos</option>
-                    <option value="Quetzaltenango">Quetzaltenango</option>
-                    <option value="Huehuetenango">Huehuetenango</option>
-                    <option value="Cobán">Cobán</option>
-                    <option value="Ciudad de Guatemala">Ciudad de Guatemala</option>
-                </select>
-            </div>
-            
-            <button id="applyFilter1" class="apply-btn">Aplicar Filtros</button>
-        </div>
-        
-        <div id="module1-content" class="overflow-x-auto">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Municipio</th>
-                        <th>Ventas Totales</th>
-                        <th>Mototaxis Estimados</th>
-                        <th>Participación (%)</th>
-                        <th>Recomendación</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body-1">
-                    <!-- Los datos se cargarán dinámicamente -->
-                </tbody>
-            </table>
-        </div>
-        
-        <button class="export-btn" onclick="exportData('module1')">
-            Exportar a CSV
-        </button>
-    </div>
-
-    <!-- Módulo 2: Promedios de Clientes -->
-    <div id="module-2" class="module-content">
-        <h2 class="text-xl font-semibold mb-4">Promedios de Clientes</h2>
-        
-        <div class="filter-section">
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Cliente:</label>
-                <select id="clientePromedioFilter" class="filter-select">
-                    <option value="">Todos</option>
-                    <option value="cliente_1">Cliente 1</option>
-                    <option value="cliente_2">Cliente 2</option>
-                    <option value="cliente_3">Cliente 3</option>
-                </select>
-            </div>
-            
-            <button id="applyFilter2" class="apply-btn">Aplicar Filtros</button>
-        </div>
-        
-        <div id="module2-content" class="overflow-x-auto">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Promedio Actual</th>
-                        <th>Promedio Histórico</th>
-                        <th>Tendencia</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body-2">
-                    <!-- Los datos se cargarán dinámicamente -->
-                </tbody>
-            </table>
-        </div>
-        
-        <button class="export-btn" onclick="exportData('module2')">
-            Exportar a CSV
-        </button>
-    </div>
-
-    <!-- Módulo 3: Recuperación de Marcas -->
-    <div id="module-3" class="module-content">
-        <h2 class="text-xl font-semibold mb-4">Recuperación de Marcas</h2>
-        
-        <div class="filter-section">
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Cliente:</label>
-                <select id="clienteMarcaFilter" class="filter-select">
-                    <option value="">Todos</option>
-                    <option value="cliente_1">Cliente 1</option>
-                    <option value="cliente_2">Cliente 2</option>
-                    <option value="cliente_3">Cliente 3</option>
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Marca:</label>
-                <select id="marcaFilter" class="filter-select">
-                    <option value="">Todas</option>
-                    <option value="GTS">GTS</option>
-                    <option value="CEAT">CEAT</option>
-                    <option value="LIYANG">LIYANG</option>
-                    <option value="KOLBEN">KOLBEN</option>
-                    <option value="MTP">MTP</option>
-                </select>
-            </div>
-            
-            <button id="applyFilter3" class="apply-btn">Aplicar Filtros</button>
-        </div>
-        
-        <div id="module3-content" class="overflow-x-auto">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Marca</th>
-                        <th>Última Compra</th>
-                        <th>Días Transcurridos</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body-3">
-                    <!-- Los datos se cargarán dinámicamente -->
-                </tbody>
-            </table>
-        </div>
-        
-        <button class="export-btn" onclick="exportData('module3')">
-            Exportar a CSV
-        </button>
-    </div>
-
-    <!-- Módulo 4: Recuperación de Códigos -->
-    <div id="module-4" class="module-content">
+    <!-- Módulo de Recuperación de Códigos -->
+    <div id="module-codes">
         <h2 class="text-xl font-semibold mb-4">Recuperación de Códigos</h2>
         
-        <div class="filter-section">
-            <div class="filter-group">
+        <!-- Buscador de Códigos -->
+        <div class="search-section">
+            <div class="search-group">
+                <label class="block text-sm font-medium text-gray-700">Buscar Código:</label>
+                <input type="text" id="codeSearch" placeholder="Ej: A101, B202..." class="search-input">
+                <button id="searchButton" class="action-btn primary-btn">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </div>
+            
+            <div class="search-group">
                 <label class="block text-sm font-medium text-gray-700">Cliente:</label>
                 <select id="clienteCodigoFilter" class="filter-select">
                     <option value="">Todos</option>
@@ -290,228 +204,307 @@
                 </select>
             </div>
             
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Código Original:</label>
-                <select id="codigoOriginalFilter" class="filter-select">
-                    <option value="">Todos</option>
-                    <option value="A101">A101</option>
-                    <option value="B202">B202</option>
-                    <option value="C303">C303</option>
-                </select>
-            </div>
-            
-            <button id="applyFilter4" class="apply-btn">Aplicar Filtros</button>
+            <button id="applyFilters" class="action-btn primary-btn">Aplicar Filtros</button>
         </div>
         
-        <div id="module4-content" class="overflow-x-auto">
+        <!-- Formulario para asociar códigos alternos -->
+        <div class="search-section">
+            <h3 class="text-lg font-semibold mb-2">Asociar Código Alterno</h3>
+            <div class="search-group">
+                <label class="block text-sm font-medium text-gray-700">Código Madre:</label>
+                <input type="text" id="motherCode" placeholder="Código principal" class="search-input">
+            </div>
+            
+            <div class="search-group">
+                <label class="block text-sm font-medium text-gray-700">Código Alterno:</label>
+                <input type="text" id="alternateCode" placeholder="Código alternativo" class="search-input">
+            </div>
+            
+            <button id="associateButton" class="action-btn success-btn">
+                <i class="fas fa-link"></i> Asociar
+            </button>
+        </div>
+        
+        <!-- Resultados -->
+        <div id="module-content" class="overflow-x-auto">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Cliente</th>
-                        <th>Código Abandonado</th>
-                        <th>Última Compra</th>
-                        <th>Código Alterno</th>
-                        <th>Validado</th>
+                        <th>Código Madre</th>
+                        <th>Códigos Alternos</th>
+                        <th>Fecha Última Compra</th>
+                        <th>Continuidad de Compra</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody id="table-body-4">
+                <tbody id="table-body">
                     <!-- Los datos se cargarán dinámicamente -->
                 </tbody>
             </table>
         </div>
         
-        <button class="export-btn" onclick="exportData('module4')">
-            Exportar a CSV
+        <button class="export-btn" onclick="exportData()">
+            <i class="fas fa-download"></i> Exportar a CSV
         </button>
+    </div>
+</div>
+
+<!-- Modal para detalles -->
+<div id="detail-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <h3 class="text-lg font-bold mb-2">Detalles de Código</h3>
+        <div id="modal-details"></div>
     </div>
 </div>
 
 <script>
     // Datos de ejemplo
-    const datos3WH = [
-        { municipio: 'Quetzaltenango', ventas: 500000, mototaxis: 1500, participacion: 33.33 },
-        { municipio: 'Huehuetenango', ventas: 800000, mototaxis: 2000, participacion: 40.00 },
-        { municipio: 'Cobán', ventas: 100000, mototaxis: 1000, participacion: 10.00 },
-        { municipio: 'Ciudad de Guatemala', ventas: 2500000, mototaxis: 5000, participacion: 50.00 }
+    const codigosData = [
+        { 
+            madre: 'A101', 
+            alternos: ['A102', 'A103'], 
+            ultimaCompra: '2023-10-15',
+            continuidad: 'alta',
+            cliente: 'Cliente 1',
+            comprasAlternos: {
+                'A102': ['2023-09-10', '2023-10-05'],
+                'A103': ['2023-08-15']
+            }
+        },
+        { 
+            madre: 'B202', 
+            alternos: ['B203'], 
+            ultimaCompra: '2023-09-20',
+            continuidad: 'media',
+            cliente: 'Cliente 2',
+            comprasAlternos: {
+                'B203': ['2023-08-22']
+            }
+        },
+        { 
+            madre: 'C303', 
+            alternos: ['C304', 'C305', 'C306'], 
+            ultimaCompra: '2023-11-05',
+            continuidad: 'alta',
+            cliente: 'Cliente 3',
+            comprasAlternos: {
+                'C304': ['2023-10-12', '2023-11-01'],
+                'C305': ['2023-09-18'],
+                'C306': ['2023-10-20', '2023-11-02']
+            }
+        },
+        { 
+            madre: 'D404', 
+            alternos: [], 
+            ultimaCompra: '2023-07-30',
+            continuidad: 'baja',
+            cliente: 'Cliente 1',
+            comprasAlternos: {}
+        }
     ];
 
-    const datosClientes = [
-        { cliente: 'Cliente 1', promedioActual: 55000, promedioHistorico: 70000 },
-        { cliente: 'Cliente 2', promedioActual: 125000, promedioHistorico: 110000 },
-        { cliente: 'Cliente 3', promedioActual: 11500, promedioHistorico: 20000 }
-    ];
-
-    const datosMarcas = [
-        { cliente: 'Cliente 1', marca: 'GTS', ultimaCompra: '2025-05-20', diasTranscurridos: 120 },
-        { cliente: 'Cliente 3', marca: 'LIYANG', ultimaCompra: '2025-03-20', diasTranscurridos: 180 },
-        { cliente: 'Cliente 3', marca: 'KOLBEN', ultimaCompra: '2025-06-25', diasTranscurridos: 85 }
-    ];
-
-    const datosCodigos = [
-        { cliente: 'Cliente 1', codigoAbandonado: 'A101', ultimaCompra: '2025-05-20', codigoAlterno: 'A102', validado: 'Sí' },
-        { cliente: 'Cliente 2', codigoAbandonado: 'B202', ultimaCompra: '2025-06-10', codigoAlterno: 'B203', validado: 'No' },
-        { cliente: 'Cliente 3', codigoAbandonado: 'C303', ultimaCompra: '2025-03-20', codigoAlterno: 'C304', validado: 'Sí' }
-    ];
-
-    // Función para cambiar entre pestañas
-    function switchTab(tabId) {
-        // Ocultar todos los módulos
-        document.querySelectorAll('.module-content').forEach(module => {
-            module.classList.remove('active');
-        });
-        
-        // Desactivar todas las pestañas
-        document.querySelectorAll('.tab-button').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        
-        // Activar la pestaña seleccionada
-        document.getElementById(tabId).classList.add('active');
-        
-        // Mostrar el módulo correspondiente
-        const moduleNumber = tabId.split('-')[1];
-        document.getElementById(`module-${moduleNumber}`).classList.add('active');
-    }
-
-    // Función para aplicar filtros al módulo 1
-    function aplicarFiltrosModulo1() {
-        const participacionMinima = parseFloat(document.getElementById('marketShareThreshold').value) || 0;
-        const municipioFiltro = document.getElementById('municipio3WHFilter').value;
-        
-        const tbody = document.getElementById('table-body-1');
+    // Función para renderizar la tabla
+    function renderTable(data) {
+        const tbody = document.getElementById('table-body');
         tbody.innerHTML = '';
         
-        datos3WH.forEach(item => {
-            // Aplicar filtros
-            if (municipioFiltro && item.municipio !== municipioFiltro) return;
-            if (item.participacion >= participacionMinima) return;
-            
-            // Determinar recomendación
-            const recomendacion = item.participacion < 20 ? 'Enfocar en este municipio' : 'Mantener o expandir';
-            
-            // Agregar fila a la tabla
+        if (data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-gray-500">No se encontraron códigos con los filtros aplicados</td></tr>`;
+            return;
+        }
+        
+        data.forEach(item => {
             const row = document.createElement('tr');
+            
+            // Determinar el indicador de continuidad
+            let continuityClass = '';
+            let continuityText = '';
+            
+            switch(item.continuidad) {
+                case 'alta':
+                    continuityClass = 'good-continuity';
+                    continuityText = 'Buena continuidad';
+                    break;
+                case 'media':
+                    continuityClass = 'partial-continuity';
+                    continuityText = 'Continuidad media';
+                    break;
+                case 'baja':
+                    continuityClass = 'no-continuity';
+                    continuityText = 'Sin continuidad';
+                    break;
+            }
+            
+            // Crear badges para códigos alternos
+            let alternosHTML = '';
+            if (item.alternos.length > 0) {
+                item.alternos.forEach(alterno => {
+                    alternosHTML += `<span class="alternate-code-badge">${alterno}<span class="remove-btn" onclick="removeAlternateCode('${item.madre}', '${alterno}')"><i class="fas fa-times"></i></span></span>`;
+                });
+            } else {
+                alternosHTML = '<span class="text-gray-500">No tiene códigos alternos</span>';
+            }
+            
             row.innerHTML = `
-                <td>${item.municipio}</td>
-                <td>$${item.ventas.toLocaleString('es-GT')}</td>
-                <td>${item.mototaxis.toLocaleString('es-GT')}</td>
-                <td>${item.participacion.toFixed(2)}%</td>
-                <td class="${item.participacion < 20 ? 'text-red-600 font-semibold' : ''}">${recomendacion}</td>
+                <td class="font-semibold">${item.madre}</td>
+                <td>${alternosHTML}</td>
+                <td>${item.ultimaCompra}</td>
+                <td><span class="continuity-indicator ${continuityClass}"></span>${continuityText}</td>
+                <td>
+                    <button class="action-btn primary-btn" onclick="showDetails('${item.madre}')">
+                        <i class="fas fa-info-circle"></i> Detalles
+                    </button>
+                </td>
             `;
             tbody.appendChild(row);
         });
+    }
+
+    // Función para buscar códigos
+    function searchCodes() {
+        const searchTerm = document.getElementById('codeSearch').value.toLowerCase();
+        const clienteFilter = document.getElementById('clienteCodigoFilter').value;
         
-        // Si no hay resultados
-        if (tbody.children.length === 0) {
-            const row = document.createElement('tr');
-            row.innerHTML = `<td colspan="5" class="text-center py-4 text-gray-500">No se encontraron datos con los filtros aplicados</td>`;
-            tbody.appendChild(row);
+        let filteredData = codigosData;
+        
+        // Aplicar filtro de búsqueda
+        if (searchTerm) {
+            filteredData = filteredData.filter(item => 
+                item.madre.toLowerCase().includes(searchTerm) || 
+                item.alternos.some(alterno => alterno.toLowerCase().includes(searchTerm))
+            );
+        }
+        
+        // Aplicar filtro de cliente
+        if (clienteFilter) {
+            filteredData = filteredData.filter(item => item.cliente === clienteFilter);
+        }
+        
+        renderTable(filteredData);
+    }
+
+    // Función para asociar código alterno
+    function associateAlternateCode() {
+        const motherCode = document.getElementById('motherCode').value.trim();
+        const alternateCode = document.getElementById('alternateCode').value.trim();
+        
+        if (!motherCode || !alternateCode) {
+            alert('Por favor, complete ambos campos');
+            return;
+        }
+        
+        // Buscar el código madre
+        const codeItem = codigosData.find(item => item.madre === motherCode);
+        
+        if (!codeItem) {
+            if (confirm(`El código "${motherCode}" no existe. ¿Desea crearlo?`)) {
+                // Crear nuevo código madre
+                codigosData.push({
+                    madre: motherCode,
+                    alternos: [alternateCode],
+                    ultimaCompra: 'N/A',
+                    continuidad: 'baja',
+                    cliente: 'Nuevo cliente',
+                    comprasAlternos: {
+                        [alternateCode]: []
+                    }
+                });
+                alert(`Código "${motherCode}" creado con éxito con el alterno "${alternateCode}"`);
+            }
+        } else {
+            // Verificar si el alterno ya existe
+            if (codeItem.alternos.includes(alternateCode)) {
+                alert(`El código alterno "${alternateCode}" ya está asociado a "${motherCode}"`);
+                return;
+            }
+            
+            // Agregar el código alterno
+            codeItem.alternos.push(alternateCode);
+            codeItem.comprasAlternos[alternateCode] = [];
+            alert(`Código alterno "${alternateCode}" asociado con éxito a "${motherCode}"`);
+        }
+        
+        // Limpiar campos
+        document.getElementById('motherCode').value = '';
+        document.getElementById('alternateCode').value = '';
+        
+        // Actualizar tabla
+        searchCodes();
+    }
+
+    // Función para eliminar código alterno
+    function removeAlternateCode(motherCode, alternateCode) {
+        if (!confirm(`¿Está seguro de que desea eliminar el código alterno "${alternateCode}" del código madre "${motherCode}"?`)) {
+            return;
+        }
+        
+        const codeItem = codigosData.find(item => item.madre === motherCode);
+        if (codeItem) {
+            codeItem.alternos = codeItem.alternos.filter(alt => alt !== alternateCode);
+            delete codeItem.comprasAlternos[alternateCode];
+            
+            // Actualizar tabla
+            searchCodes();
         }
     }
 
-    // Función para aplicar filtros al módulo 2
-    function aplicarFiltrosModulo2() {
-        const clienteFiltro = document.getElementById('clientePromedioFilter').value;
+    // Función para mostrar detalles
+    function showDetails(motherCode) {
+        const codeItem = codigosData.find(item => item.madre === motherCode);
+        if (!codeItem) return;
         
-        const tbody = document.getElementById('table-body-2');
-        tbody.innerHTML = '';
+        let detailsHTML = `
+            <p><strong>Código Madre:</strong> ${codeItem.madre}</p>
+            <p><strong>Cliente:</strong> ${codeItem.cliente}</p>
+            <p><strong>Última Compra:</strong> ${codeItem.ultimaCompra}</p>
+            <p><strong>Continuidad:</strong> ${codeItem.continuidad}</p>
+            <p class="mt-4"><strong>Códigos Alternos:</strong></p>
+            <ul class="list-disc pl-5 mt-2">
+        `;
         
-        datosClientes.forEach(item => {
-            // Aplicar filtros
-            if (clienteFiltro && item.cliente !== clienteFiltro) return;
-            
-            // Determinar tendencia
-            const tendencia = item.promedioActual < item.promedioHistorico ? 'A la baja' : 'En aumento';
-            
-            // Agregar fila a la tabla
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${item.cliente}</td>
-                <td>$${item.promedioActual.toLocaleString('es-GT')}</td>
-                <td>$${item.promedioHistorico.toLocaleString('es-GT')}</td>
-                <td class="${item.promedioActual < item.promedioHistorico ? 'text-red-600 font-semibold' : 'text-green-600'}">${tendencia}</td>
-            `;
-            tbody.appendChild(row);
-        });
+        if (codeItem.alternos.length > 0) {
+            codeItem.alternos.forEach(alterno => {
+                const compras = codeItem.comprasAlternos[alterno] || [];
+                detailsHTML += `<li>${alterno} - Compras: ${compras.length} (${compras.join(', ') || 'Ninguna'})</li>`;
+            });
+        } else {
+            detailsHTML += `<li>No tiene códigos alternos</li>`;
+        }
+        
+        detailsHTML += `</ul>`;
+        
+        document.getElementById('modal-details').innerHTML = detailsHTML;
+        document.getElementById('detail-modal').style.display = 'flex';
     }
 
-    // Función para aplicar filtros al módulo 3
-    function aplicarFiltrosModulo3() {
-        const clienteFiltro = document.getElementById('clienteMarcaFilter').value;
-        const marcaFiltro = document.getElementById('marcaFilter').value;
-        
-        const tbody = document.getElementById('table-body-3');
-        tbody.innerHTML = '';
-        
-        datosMarcas.forEach(item => {
-            // Aplicar filtros
-            if (clienteFiltro && item.cliente !== clienteFiltro) return;
-            if (marcaFiltro && item.marca !== marcaFiltro) return;
-            
-            // Agregar fila a la tabla
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${item.cliente}</td>
-                <td>${item.marca}</td>
-                <td>${item.ultimaCompra}</td>
-                <td>${item.diasTranscurridos}</td>
-            `;
-            tbody.appendChild(row);
-        });
+    // Función para cerrar modal
+    function closeModal() {
+        document.getElementById('detail-modal').style.display = 'none';
     }
 
-    // Función para aplicar filtros al módulo 4
-    function aplicarFiltrosModulo4() {
-        const clienteFiltro = document.getElementById('clienteCodigoFilter').value;
-        const codigoFiltro = document.getElementById('codigoOriginalFilter').value;
-        
-        const tbody = document.getElementById('table-body-4');
-        tbody.innerHTML = '';
-        
-        datosCodigos.forEach(item => {
-            // Aplicar filtros
-            if (clienteFiltro && item.cliente !== clienteFiltro) return;
-            if (codigoFiltro && item.codigoAbandonado !== codigoFiltro) return;
-            
-            // Agregar fila a la tabla
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${item.cliente}</td>
-                <td>${item.codigoAbandonado}</td>
-                <td>${item.ultimaCompra}</td>
-                <td>${item.codigoAlterno}</td>
-                <td class="${item.validado === 'Sí' ? 'text-green-600' : 'text-red-600'}">${item.validado}</td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    // Función para exportar datos (simulada)
-    function exportData(moduleId) {
-        alert(`Función de exportación para ${moduleId} sería implementada aquí.`);
+    // Función para exportar datos
+    function exportData() {
+        // Simular exportación a CSV
+        alert('Función de exportación a CSV sería implementada aquí. Se exportarían ' + codigosData.length + ' registros.');
     }
 
     // Inicialización cuando el DOM está cargado
     document.addEventListener('DOMContentLoaded', function() {
-        // Configurar event listeners para las pestañas
-        const tabs = document.querySelectorAll('.tab-button');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                switchTab(this.id);
-            });
+        // Configurar event listeners
+        document.getElementById('searchButton').addEventListener('click', searchCodes);
+        document.getElementById('applyFilters').addEventListener('click', searchCodes);
+        document.getElementById('associateButton').addEventListener('click', associateAlternateCode);
+        
+        // Búsqueda al presionar Enter
+        document.getElementById('codeSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchCodes();
+            }
         });
         
-        // Configurar event listeners para los botones de aplicar filtros
-        document.getElementById('applyFilter1').addEventListener('click', aplicarFiltrosModulo1);
-        document.getElementById('applyFilter2').addEventListener('click', aplicarFiltrosModulo2);
-        document.getElementById('applyFilter3').addEventListener('click', aplicarFiltrosModulo3);
-        document.getElementById('applyFilter4').addEventListener('click', aplicarFiltrosModulo4);
-        
         // Cargar datos iniciales
-        aplicarFiltrosModulo1();
-        aplicarFiltrosModulo2();
-        aplicarFiltrosModulo3();
-        aplicarFiltrosModulo4();
+        renderTable(codigosData);
         
         // Simular datos de usuario
         document.getElementById('userIdDisplay').textContent = "UsuarioDemo123";
