@@ -3,18 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Ventas Modular</title>
+    <title>Dashboard de Ventas Modular - Corregido</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .tab-button.active {
+            background-color: #1f2937;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .container-card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 95%;
+            margin-top: 2rem;
+        }
+        .module-content {
+            display: none;
+        }
+        .module-content.active {
+            display: block;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            padding: 20px;
+            border-radius: 0.75rem;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        @media (min-width: 768px) {
+            .container-card {
+                max-width: 1200px;
+            }
+        }
+        .dashboard-header {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .data-table th, .data-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .data-table th {
+            background-color: #4f46e5;
+            color: white;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        .data-table tr:hover {
+            background-color: #f3f4f6;
+        }
+        .export-btn {
+            background-color: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .export-btn:hover {
+            background-color: #059669;
+        }
+        .filter-section {
+            background-color: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body class="p-4 md:p-8">
 
-<div class="flex flex-col md:flex-row items-center justify-between mb-8">
-    <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Dashboard de Ventas</h1>
-    <div class="flex items-center space-x-2 text-sm text-gray-500">
-        <span>ID de Usuario:</span>
-        <span id="userIdDisplay" class="font-mono bg-gray-200 px-2 py-1 rounded-lg break-all">Cargando...</span>
+<div class="dashboard-header">
+    <div class="flex flex-col md:flex-row items-center justify-between">
+        <h1 class="text-3xl font-bold mb-4 md:mb-0">Dashboard de Ventas</h1>
+        <div class="flex items-center space-x-2 text-sm bg-white/20 px-3 py-1 rounded-lg">
+            <span>ID de Usuario:</span>
+            <span id="userIdDisplay" class="font-mono break-all">UsuarioDemo123</span>
+        </div>
     </div>
 </div>
 
@@ -24,16 +128,16 @@
         <button id="tab-1" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none active">
             1. Evaluación 3WH
         </button>
-        <button id="tab-1-1" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
+        <button id="tab-2" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
             1.1. Evaluación 2WH
         </button>
-        <button id="tab-2" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
+        <button id="tab-3" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
             2. Promedios de Clientes
         </button>
-        <button id="tab-3" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
+        <button id="tab-4" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
             3. Recuperación de Marcas
         </button>
-        <button id="tab-4" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
+        <button id="tab-5" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
             4. Recuperación de Códigos
         </button>
     </div>
@@ -41,61 +145,171 @@
     <!-- Módulos de contenido -->
     <div id="module-1" class="module-content active">
         <h2 class="text-xl font-semibold mb-4">Evaluación de Mercado (3WH Mototaxis)</h2>
-        <div id="module1-filters" class="flex flex-wrap items-center gap-4 mb-4">
+        
+        <div class="filter-section flex flex-wrap items-center gap-4 mb-4">
             <label class="block text-sm font-medium text-gray-700">Participación Baja (%):</label>
             <input type="number" id="marketShareThreshold" value="20" min="0" max="100" class="w-24 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             <label class="block text-sm font-medium text-gray-700">Municipio:</label>
             <select id="municipio3WHFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Todos</option>
+                <option value="Quetzaltenango">Quetzaltenango</option>
+                <option value="Huehuetenango">Huehuetenango</option>
+                <option value="Cobán">Cobán</option>
+                <option value="Ciudad de Guatemala">Ciudad de Guatemala</option>
             </select>
         </div>
+        
         <div id="module1-content" class="overflow-x-auto">
-            <p id="loading-1" class="text-center text-gray-500">Cargando datos...</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Municipio</th>
+                        <th>Ventas Totales</th>
+                        <th>Mototaxis Estimados</th>
+                        <th>Participación (%)</th>
+                        <th>Recomendación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Quetzaltenango</td>
+                        <td>$500,000</td>
+                        <td>1,500</td>
+                        <td>33.33%</td>
+                        <td>Mantener o expandir</td>
+                    </tr>
+                    <tr>
+                        <td>Huehuetenango</td>
+                        <td>$800,000</td>
+                        <td>2,000</td>
+                        <td>40.00%</td>
+                        <td>Mantener o expandir</td>
+                    </tr>
+                    <tr>
+                        <td>Cobán</td>
+                        <td>$100,000</td>
+                        <td>1,000</td>
+                        <td>10.00%</td>
+                        <td class="text-red-600 font-semibold">Enfocar en este municipio</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <button onclick="exportData('module1')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
-            Exportar a CSV
-        </button>
-    </div>
-
-    <div id="module-1-1" class="module-content">
-        <h2 class="text-xl font-semibold mb-4">Evaluación de Mercado (2WH)</h2>
-        <div id="module1-1-filters" class="flex flex-wrap items-center gap-4 mb-4">
-            <label class="block text-sm font-medium text-gray-700">Ventas Promedio &lt; 10,000:</label>
-            <label class="block text-sm font-medium text-gray-700">Municipio:</label>
-            <select id="municipio2WHFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="">Todos</option>
-            </select>
-        </div>
-        <div id="module1-1-content" class="overflow-x-auto">
-            <p id="loading-1-1" class="text-center text-gray-500">Cargando datos...</p>
-        </div>
-        <button onclick="exportData('module1-1')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
+        
+        <button class="export-btn mt-4">
             Exportar a CSV
         </button>
     </div>
 
     <div id="module-2" class="module-content">
-        <h2 class="text-xl font-semibold mb-4">Promedios de Clientes</h2>
-        <div id="module2-filters" class="flex flex-wrap items-center gap-4 mb-4">
-            <label class="block text-sm font-medium text-gray-700">Cliente:</label>
-            <select id="clientePromedioFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <h2 class="text-xl font-semibold mb-4">Evaluación de Mercado (2WH)</h2>
+        
+        <div class="filter-section flex flex-wrap items-center gap-4 mb-4">
+            <label class="block text-sm font-medium text-gray-700">Municipio:</label>
+            <select id="municipio2WHFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Todos</option>
+                <option value="Quetzaltenango">Quetzaltenango</option>
+                <option value="Huehuetenango">Huehuetenango</option>
+                <option value="Cobán">Cobán</option>
+                <option value="Ciudad de Guatemala">Ciudad de Guatemala</option>
             </select>
         </div>
+        
         <div id="module2-content" class="overflow-x-auto">
-            <p id="loading-2" class="text-center text-gray-500">Cargando datos...</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Municipio</th>
+                        <th>Ventas Promedio</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Quetzaltenango</td>
+                        <td>$12,500</td>
+                        <td class="text-green-600">Normal</td>
+                    </tr>
+                    <tr>
+                        <td>Huehuetenango</td>
+                        <td>$15,800</td>
+                        <td class="text-green-600">Normal</td>
+                    </tr>
+                    <tr>
+                        <td>Cobán</td>
+                        <td>$7,200</td>
+                        <td class="text-red-600 font-semibold">Por debajo de Q.10,000</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <button onclick="exportData('module2')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
+        
+        <button class="export-btn mt-4">
             Exportar a CSV
         </button>
     </div>
 
     <div id="module-3" class="module-content">
+        <h2 class="text-xl font-semibold mb-4">Promedios de Clientes</h2>
+        
+        <div class="filter-section flex flex-wrap items-center gap-4 mb-4">
+            <label class="block text-sm font-medium text-gray-700">Cliente:</label>
+            <select id="clientePromedioFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Todos</option>
+                <option value="cliente_1">Cliente 1</option>
+                <option value="cliente_2">Cliente 2</option>
+                <option value="cliente_3">Cliente 3</option>
+            </select>
+        </div>
+        
+        <div id="module3-content" class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Promedio Actual</th>
+                        <th>Promedio Histórico</th>
+                        <th>Tendencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cliente 1</td>
+                        <td>$55,000</td>
+                        <td>$70,000</td>
+                        <td class="text-red-600 font-semibold">A la baja</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 2</td>
+                        <td>$125,000</td>
+                        <td>$110,000</td>
+                        <td class="text-green-600">En aumento</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>$11,500</td>
+                        <td>$20,000</td>
+                        <td class="text-red-600 font-semibold">A la baja</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <button class="export-btn mt-4">
+            Exportar a CSV
+        </button>
+    </div>
+
+    <div id="module-4" class="module-content">
         <h2 class="text-xl font-semibold mb-4">Recuperación de Marcas</h2>
-        <div id="module3-filters" class="flex flex-wrap items-center gap-4 mb-4">
+        
+        <div class="filter-section flex flex-wrap items-center gap-4 mb-4">
             <label class="block text-sm font-medium text-gray-700">Cliente:</label>
             <select id="clienteMarcaFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Todos</option>
+                <option value="cliente_1">Cliente 1</option>
+                <option value="cliente_2">Cliente 2</option>
+                <option value="cliente_3">Cliente 3</option>
             </select>
             <label class="block text-sm font-medium text-gray-700">Marca:</label>
             <select id="marcaFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -107,30 +321,103 @@
                 <option value="MTP">MTP</option>
             </select>
         </div>
-        <div id="module3-content" class="overflow-x-auto">
-            <p id="loading-3" class="text-center text-gray-500">Cargando datos...</p>
+        
+        <div id="module4-content" class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Marca</th>
+                        <th>Última Compra</th>
+                        <th>Días Transcurridos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cliente 1</td>
+                        <td>GTS</td>
+                        <td>2025-05-20</td>
+                        <td>120</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>LIYANG</td>
+                        <td>2025-03-20</td>
+                        <td>180</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>KOLBEN</td>
+                        <td>2025-06-25</td>
+                        <td>85</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <button onclick="exportData('module3')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
+        
+        <button class="export-btn mt-4">
             Exportar a CSV
         </button>
     </div>
 
-    <div id="module-4" class="module-content">
+    <div id="module-5" class="module-content">
         <h2 class="text-xl font-semibold mb-4">Recuperación de Códigos</h2>
-        <div id="module4-filters" class="flex flex-wrap items-center gap-4 mb-4">
+        
+        <div class="filter-section flex flex-wrap items-center gap-4 mb-4">
             <label class="block text-sm font-medium text-gray-700">Cliente:</label>
             <select id="clienteCodigoFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Todos</option>
+                <option value="cliente_1">Cliente 1</option>
+                <option value="cliente_2">Cliente 2</option>
+                <option value="cliente_3">Cliente 3</option>
             </select>
             <label class="block text-sm font-medium text-gray-700">Código Original:</label>
             <select id="codigoOriginalFilter" class="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Todos</option>
+                <option value="A101">A101</option>
+                <option value="B202">B202</option>
+                <option value="C303">C303</option>
             </select>
         </div>
-        <div id="module4-content" class="overflow-x-auto">
-            <p id="loading-4" class="text-center text-gray-500">Cargando datos...</p>
+        
+        <div id="module5-content" class="overflow-x-auto">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Código Abandonado</th>
+                        <th>Última Compra</th>
+                        <th>Código Alterno</th>
+                        <th>Validado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cliente 1</td>
+                        <td>A101</td>
+                        <td>2025-05-20</td>
+                        <td>A102</td>
+                        <td class="text-green-600">Sí</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 2</td>
+                        <td>B202</td>
+                        <td>2025-06-10</td>
+                        <td>B203</td>
+                        <td class="text-red-600">No</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>C303</td>
+                        <td>2025-03-20</td>
+                        <td>C304</td>
+                        <td class="text-green-600">Sí</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <button onclick="exportData('module4')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-300">
+        
+        <button class="export-btn mt-4">
             Exportar a CSV
         </button>
     </div>
@@ -145,6 +432,59 @@
     </div>
 </div>
 
-<script type="module" src="app.js"></script>
+<script>
+    // Función para cambiar entre pestañas
+    function switchTab(tabId) {
+        // Ocultar todos los módulos
+        document.querySelectorAll('.module-content').forEach(module => {
+            module.classList.remove('active');
+        });
+        
+        // Desactivar todas las pestañas
+        document.querySelectorAll('.tab-button').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        // Activar la pestaña seleccionada
+        document.getElementById(tabId).classList.add('active');
+        
+        // Mostrar el módulo correspondiente
+        const moduleNumber = tabId.split('-')[1];
+        document.getElementById(`module-${moduleNumber}`).classList.add('active');
+    }
+
+    // Agregar event listeners a las pestañas
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.tab-button');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                switchTab(this.id);
+            });
+        });
+        
+        // Simular datos de usuario
+        document.getElementById('userIdDisplay').textContent = "UsuarioDemo123";
+    });
+
+    // Función para mostrar modal
+    function showModal(message) {
+        document.getElementById('modal-message').textContent = message;
+        document.getElementById('message-modal').style.display = 'flex';
+    }
+
+    // Función para cerrar modal
+    function closeModal() {
+        document.getElementById('message-modal').style.display = 'none';
+    }
+
+    // Simular funcionalidad de exportación
+    document.querySelectorAll('.export-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            showModal('Función de exportación simulada. En una implementación real, se generarían los datos CSV.');
+        });
+    });
+</script>
+
 </body>
 </html>
