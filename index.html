@@ -298,63 +298,6 @@
         }
     </style>
 </head>
-<script>
-    // --- Cambio de pestañas ---
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const modules = document.querySelectorAll('.module-content');
-
-    tabButtons.forEach((btn, index) => {
-        btn.addEventListener('click', () => {
-            // quitar active de todos
-            tabButtons.forEach(b => b.classList.remove('active'));
-            modules.forEach(m => m.classList.remove('active'));
-
-            // activar el que corresponde
-            btn.classList.add('active');
-            document.getElementById(`module-${index+1}`).classList.add('active');
-        });
-    });
-
-    // --- Exportar tablas a CSV ---
-    function exportTableToCSV(tableId, filename) {
-        const table = document.querySelector(tableId);
-        let csv = [];
-        const rows = table.querySelectorAll("tr");
-
-        rows.forEach(row => {
-            const cols = row.querySelectorAll("td, th");
-            let rowData = [];
-            cols.forEach(col => rowData.push(`"${col.innerText}"`));
-            csv.push(rowData.join(","));
-        });
-
-        const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
-        const downloadLink = document.createElement("a");
-        downloadLink.href = URL.createObjectURL(csvFile);
-        downloadLink.download = filename;
-        downloadLink.click();
-    }
-
-    // asignar a cada botón de exportar
-    const exportButtons = document.querySelectorAll('.btn-success');
-    exportButtons.forEach((btn, i) => {
-        btn.addEventListener('click', () => {
-            exportTableToCSV(`#module-${i+1} table`, `modulo${i+1}.csv`);
-        });
-    });
-
-    // --- Ejemplo simple de filtro ---
-    document.getElementById('municipio3WHFilter').addEventListener('change', function() {
-        const value = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#module-1 tbody tr');
-
-        rows.forEach(row => {
-            const municipio = row.cells[0].innerText.toLowerCase();
-            row.style.display = (value === "" || municipio.includes(value)) ? "" : "none";
-        });
-    });
-</script>
-
 <body>
     <div class="dashboard-container">
         <div class="dashboard-header">
@@ -835,5 +778,62 @@
             switchTab('tab-1');
         });
     </script>
+    <script>
+    // --- Cambio de pestañas ---
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const modules = document.querySelectorAll('.module-content');
+
+    tabButtons.forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            // quitar active de todos
+            tabButtons.forEach(b => b.classList.remove('active'));
+            modules.forEach(m => m.classList.remove('active'));
+
+            // activar el que corresponde
+            btn.classList.add('active');
+            document.getElementById(`module-${index+1}`).classList.add('active');
+        });
+    });
+
+    // --- Exportar tablas a CSV ---
+    function exportTableToCSV(tableId, filename) {
+        const table = document.querySelector(tableId);
+        let csv = [];
+        const rows = table.querySelectorAll("tr");
+
+        rows.forEach(row => {
+            const cols = row.querySelectorAll("td, th");
+            let rowData = [];
+            cols.forEach(col => rowData.push(`"${col.innerText}"`));
+            csv.push(rowData.join(","));
+        });
+
+        const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
+        const downloadLink = document.createElement("a");
+        downloadLink.href = URL.createObjectURL(csvFile);
+        downloadLink.download = filename;
+        downloadLink.click();
+    }
+
+    // asignar a cada botón de exportar
+    const exportButtons = document.querySelectorAll('.btn-success');
+    exportButtons.forEach((btn, i) => {
+        btn.addEventListener('click', () => {
+            exportTableToCSV(`#module-${i+1} table`, `modulo${i+1}.csv`);
+        });
+    });
+
+    // --- Ejemplo simple de filtro ---
+    document.getElementById('municipio3WHFilter').addEventListener('change', function() {
+        const value = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#module-1 tbody tr');
+
+        rows.forEach(row => {
+            const municipio = row.cells[0].innerText.toLowerCase();
+            row.style.display = (value === "" || municipio.includes(value)) ? "" : "none";
+        });
+    });
+</script>
+
 </body>
 </html>
