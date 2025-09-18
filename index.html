@@ -4,65 +4,299 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Ventas Modular</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --info: #7209b7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7ec 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .tabs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .tab-button {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px 10px 0 0;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #e9ecef;
+            color: var(--gray);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .tab-button:hover {
+            background: #dee2e6;
+            transform: translateY(-3px);
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .module-content {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .module-content.active {
+            display: block;
+        }
+        
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f3f5;
+        }
+        
+        .filter-section {
+            background: linear-gradient(120deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        .filter-input, .filter-select {
+            padding: 12px 16px;
+            border: 2px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+            width: 200px;
+        }
+        
+        .filter-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(120deg, var(--secondary), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-success {
+            background: linear-gradient(120deg, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(120deg, #27ae60, #2ecc71);
+            transform: translateY(-2px);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .data-table th {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e1e5eb;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .data-table tr:hover {
+            background-color: #e9ecef;
+        }
+        
+        .highlight {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        
+        .user-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 992px) {
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-input, .filter-select {
+                width: 100%;
+            }
+            
+            .tabs-container {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
 </head>
-<body class="p-4 md:p-8">
-
-<div class="dashboard-header">
-    <div class="flex flex-col md:flex-row items-center justify-between">
-        <h1 class="text-3xl font-bold mb-4 md:mb-0">Dashboard de Ventas</h1>
-        <div class="flex items-center space-x-2 text-sm bg-white/20 px-3 py-1 rounded-lg">
-            <span>ID de Usuario:</span>
-            <span id="userIdDisplay" class="font-mono break-all">UsuarioDemo123</span>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-chart-line"></i> Dashboard de Ventas</h1>
+            <div class="user-badge">
+                <i class="fas fa-user-circle"></i>
+                <span id="userIdDisplay">UsuarioDemo123</span>
+            </div>
         </div>
-    </div>
-</div>
 
-<div class="container-card mx-auto">
-    <!-- Navegación de pestañas -->
-    <div class="flex flex-wrap space-x-2 md:space-x-4 border-b border-gray-300 mb-6">
-        <button id="tab-1" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none active">
-            1. Evaluación 3WH
-        </button>
-        <button id="tab-2" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
-            1.1. Evaluación 2WH
-        </button>
-        <button id="tab-3" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
-            2. Promedios de Clientes
-        </button>
-        <button id="tab-4" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
-            3. Recuperación de Marcas
-        </button>
-        <button id="tab-5" class="tab-button px-4 py-2 mb-2 rounded-t-lg transition-all duration-300 text-gray-600 hover:bg-gray-200 focus:outline-none">
-            4. Recuperación de Códigos
-        </button>
-    </div>
+        <div class="tabs-container">
+            <button id="tab-1" class="tab-button active">
+                <i class="fas fa-motorcycle"></i> 1. Mercado 3WH
+            </button>
+            <button id="tab-2" class="tab-button">
+                <i class="fas fa-bicycle"></i> 1.1. Mercado 2WH
+            </button>
+            <button id="tab-3" class="tab-button">
+                <i class="fas fa-users"></i> 2. Promedios Clientes
+            </button>
+            <button id="tab-4" class="tab-button">
+                <i class="fas fa-tags"></i> 3. Recuperación Marcas
+            </button>
+            <button id="tab-5" class="tab-button">
+                <i class="fas fa-barcode"></i> 4. Recuperación Códigos
+            </button>
+        </div>
 
-    <!-- Módulo 1: Evaluación 3WH -->
-    <div id="module-1" class="module-content active">
-        <h2 class="text-xl font-semibold mb-4">Evaluación de Mercado (3WH Mototaxis)</h2>
-        
-        <div class="filter-section">
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Participación Baja (%):</label>
-                <input type="number" id="marketShareThreshold" value="20" min="0" max="100" class="filter-input">
+        <!-- Módulo 1: Evaluación 3WH -->
+        <div id="module-1" class="module-content active">
+            <div class="module-header">
+                <h2><i class="fas fa-motorcycle"></i> Evaluación de Mercado (3WH Mototaxis)</h2>
             </div>
             
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Municipio:</label>
-                <select id="municipio3WHFilter" class="filter-select">
-                    <option value="">Todos</option>
-                    <option value="Quetzaltenango">Quetzaltenango</option>
-                    <option value="Huehuetenango">Huehuetenango</option>
-                    <option value="Cobán">Cobán</option>
-                    <option value="Ciudad de Guatemala">Ciudad de Guatemala</option>
-                </select>
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Participación Baja (%):</label>
+                    <input type="number" id="marketShareThreshold" value="10" class="filter-input">
+                </div>
+                
+                <div class="filter-group">
+                    <label>Municipio:</label>
+                    <select id="municipio3WHFilter" class="filter-select">
+                        <option value="">Todos</option>
+                        <option>Quetzaltenango</option>
+                        <option>Huehuetenango</option>
+                        <option>Cobán</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Aplicar Filtros
+                </button>
             </div>
             
-            <button id="applyFilter1" class="apply-btn">Aplicar Filtros</button>
-        </div>
-        
-        <div id="module1-content" class="overflow-x-auto">
             <table class="data-table">
                 <thead>
                     <tr>
@@ -73,7 +307,7 @@
                         <th>Recomendación</th>
                     </tr>
                 </thead>
-                <tbody id="table-body-1">
+                <tbody>
                     <tr>
                         <td>Quetzaltenango</td>
                         <td>$500,000</td>
@@ -92,38 +326,39 @@
                         <td>Cobán</td>
                         <td>$100,000</td>
                         <td>1,000</td>
-                        <td>10.00%</td>
-                        <td class="text-red-600 font-semibold">Enfocar en este municipio</td>
+                        <td class="highlight">10.00%</td>
+                        <td class="highlight">Enfocar en este municipio</td>
                     </tr>
                 </tbody>
             </table>
+            
+            <button class="btn btn-success">
+                <i class="fas fa-file-export"></i> Exportar a CSV
+            </button>
         </div>
-        
-        <button class="export-btn mt-4">
-            Exportar a CSV
-        </button>
-    </div>
 
-    <!-- Módulo 2: Evaluación 2WH -->
-    <div id="module-2" class="module-content">
-        <h2 class="text-xl font-semibold mb-4">Evaluación de Mercado (2WH)</h2>
-        
-        <div class="filter-section">
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Municipio:</label>
-                <select id="municipio2WHFilter" class="filter-select">
-                    <option value="">Todos</option>
-                    <option value="Quetzaltenango">Quetzaltenango</option>
-                    <option value="Huehuetenango">Huehuetenango</option>
-                    <option value="Cobán">Cobán</option>
-                    <option value="Ciudad de Guatemala">Ciudad de Guatemala</option>
-                </select>
+        <!-- Módulo 2: Evaluación 2WH -->
+        <div id="module-2" class="module-content">
+            <div class="module-header">
+                <h2><i class="fas fa-bicycle"></i> Evaluación de Mercado (2WH)</h2>
             </div>
             
-            <button id="applyFilter2" class="apply-btn">Aplicar Filtros</button>
-        </div>
-        
-        <div id="module2-content" class="overflow-x-auto">
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Municipio:</label>
+                    <select id="municipio2WHFilter" class="filter-select">
+                        <option value="">Todos</option>
+                        <option>Quetzaltenango</option>
+                        <option>Huehuetenango</option>
+                        <option>Cobán</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Aplicar Filtros
+                </button>
+            </div>
+            
             <table class="data-table">
                 <thead>
                     <tr>
@@ -132,290 +367,112 @@
                         <th>Estado</th>
                     </tr>
                 </thead>
-                <tbody id="table-body-2">
+                <tbody>
                     <tr>
                         <td>Quetzaltenango</td>
                         <td>$12,500</td>
-                        <td class="text-green-600">Normal</td>
+                        <td>Normal</td>
                     </tr>
                     <tr>
                         <td>Huehuetenango</td>
                         <td>$15,800</td>
-                        <td class="text-green-600">Normal</td>
+                        <td>Normal</td>
                     </tr>
                     <tr>
                         <td>Cobán</td>
-                        <td>$7,200</td>
-                        <td class="text-red-600 font-semibold">Por debajo de Q.10,000</td>
+                        <td class="highlight">$7,200</td>
+                        <td class="highlight">Por debajo de Q.10,000</td>
                     </tr>
                 </tbody>
             </table>
+            
+            <button class="btn btn-success">
+                <i class="fas fa-file-export"></i> Exportar a CSV
+            </button>
         </div>
-        
-        <button class="export-btn mt-4">
-            Exportar a CSV
-        </button>
+
+        <!-- Los otros módulos seguirían aquí -->
+        <div id="module-3" class="module-content">
+            <div class="module-header">
+                <h2><i class="fas fa-users"></i> Promedios de Clientes</h2>
+            </div>
+            <!-- Contenido del módulo 3 -->
+        </div>
+
+        <div id="module-4" class="module-content">
+            <div class="module-header">
+                <h2><i class="fas fa-tags"></i> Recuperación de Marcas</h2>
+            </div>
+            <!-- Contenido del módulo 4 -->
+        </div>
+
+        <div id="module-5" class="module-content">
+            <div class="module-header">
+                <h2><i class="fas fa-barcode"></i> Recuperación de Códigos</h2>
+            </div>
+            <!-- Contenido del módulo 5 -->
+        </div>
     </div>
 
-    <!-- Módulo 3: Promedios de Clientes -->
-    <div id="module-3" class="module-content">
-        <h2 class="text-xl font-semibold mb-4">Promedios de Clientes</h2>
-        
-        <div class="filter-section">
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Cliente:</label>
-                <select id="clientePromedioFilter" class="filter-select">
-                    <option value="">Todos</option>
-                    <option value="cliente_1">Cliente 1</option>
-                    <option value="cliente_2">Cliente 2</option>
-                    <option value="cliente_3">Cliente 3</option>
-                </select>
-            </div>
+    <script>
+        // Función para cambiar entre pestañas
+        function switchTab(tabId) {
+            // Ocultar todos los módulos
+            document.querySelectorAll('.module-content').forEach(module => {
+                module.classList.remove('active');
+            });
             
-            <button id="applyFilter3" class="apply-btn">Aplicar Filtros</button>
-        </div>
-        
-        <div id="module3-content" class="overflow-x-auto">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Promedio Actual</th>
-                        <th>Promedio Histórico</th>
-                        <th>Tendencia</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body-3">
-                    <tr>
-                        <td>Cliente 1</td>
-                        <td>$55,000</td>
-                        <td>$70,000</td>
-                        <td class="text-red-600 font-semibold">A la baja</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 2</td>
-                        <td>$125,000</td>
-                        <td>$110,000</td>
-                        <td class="text-green-600">En aumento</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>$11,500</td>
-                        <td>$20,000</td>
-                        <td class="text-red-600 font-semibold">A la baja</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <button class="export-btn mt-4">
-            Exportar a CSV
-        </button>
-    </div>
+            // Desactivar todas las pestañas
+            document.querySelectorAll('.tab-button').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activar la pestaña seleccionada
+            document.getElementById(tabId).classList.add('active');
+            
+            // Mostrar el módulo correspondiente
+            const moduleNumber = tabId.split('-')[1];
+            document.getElementById(`module-${moduleNumber}`).classList.add('active');
+        }
 
-    <!-- Módulo 4: Recuperación de Marcas -->
-    <div id="module-4" class="module-content">
-        <h2 class="text-xl font-semibold mb-4">Recuperación de Marcas</h2>
-        
-        <div class="filter-section">
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Cliente:</label>
-                <select id="clienteMarcaFilter" class="filter-select">
-                    <option value="">Todos</option>
-                    <option value="cliente_1">Cliente 1</option>
-                    <option value="cliente_2">Cliente 2</option>
-                    <option value="cliente_3">Cliente 3</option>
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Marca:</label>
-                <select id="marcaFilter" class="filter-select">
-                    <option value="">Todas</option>
-                    <option value="GTS">GTS</option>
-                    <option value="CEAT">CEAT</option>
-                    <option value="LIYANG">LIYANG</option>
-                    <option value="KOLBEN">KOLBEN</option>
-                    <option value="MTP">MTP</option>
-                </select>
-            </div>
-            
-            <button id="applyFilter4" class="apply-btn">Aplicar Filtros</button>
-        </div>
-        
-        <div id="module4-content" class="overflow-x-auto">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Marca</th>
-                        <th>Última Compra</th>
-                        <th>Días Transcurridos</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body-4">
-                    <tr>
-                        <td>Cliente 1</td>
-                        <td>GTS</td>
-                        <td>2025-05-20</td>
-                        <td>120</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>LIYANG</td>
-                        <td>2025-03-20</td>
-                        <td>180</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>KOLBEN</td>
-                        <td>2025-06-25</td>
-                        <td>85</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <button class="export-btn mt-4">
-            Exportar a CSV
-        </button>
-    </div>
+        // Agregar event listeners a los botones de pestañas
+        document.querySelectorAll('.tab-button').forEach(tab => {
+            tab.addEventListener('click', function() {
+                switchTab(this.id);
+            });
+        });
 
-    <!-- Módulo 5: Recuperación de Códigos (Mejorado) -->
-    <div id="module-5" class="module-content">
-        <h2 class="text-xl font-semibold mb-4">Recuperación de Códigos</h2>
-        
-        <!-- Buscador de Códigos -->
-        <div class="filter-section">
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Buscar Código:</label>
-                <input type="text" id="codeSearch" placeholder="Ej: A101, B202..." class="search-input">
-                <button id="searchButton" class="apply-btn">
-                    <i class="fas fa-search"></i> Buscar
-                </button>
-            </div>
+        // Efectos para botones de filtro y exportación
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
             
-            <div class="filter-group">
-                <label class="block text-sm font-medium text-gray-700">Cliente:</label>
-                <select id="clienteCodigoFilter" class="filter-select">
-                    <option value="">Todos</option>
-                    <option value="cliente_1">Cliente 1</option>
-                    <option value="cliente_2">Cliente 2</option>
-                    <option value="cliente_3">Cliente 3</option>
-                </select>
-            </div>
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
             
-            <button id="applyFilter5" class="apply-btn">Aplicar Filtros</button>
-        </div>
-        
-        <!-- Formulario para asociar códigos alternos -->
-        <div class="code-association-section">
-            <h3 class="text-lg font-semibold mb-2">Asociar Código Alterno</h3>
-            <div class="flex flex-wrap gap-4 items-center">
-                <div class="filter-group">
-                    <label class="block text-sm font-medium text-gray-700">Código Madre:</label>
-                    <input type="text" id="motherCode" placeholder="Código principal" class="search-input">
-                </div>
-                
-                <div class="filter-group">
-                    <label class="block text-sm font-medium text-gray-700">Código Alterno:</label>
-                    <input type="text" id="alternateCode" placeholder="Código alternativo" class="search-input">
-                </div>
-                
-                <button id="associateButton" class="apply-btn success-btn">
-                    <i class="fas fa-link"></i> Asociar
-                </button>
-            </div>
-        </div>
-        
-        <!-- Resultados -->
-        <div id="module5-content" class="overflow-x-auto">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Código Madre</th>
-                        <th>Códigos Alternos</th>
-                        <th>Fecha Última Compra</th>
-                        <th>Continuidad de Compra</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body-5">
-                    <tr>
-                        <td class="font-semibold">A101</td>
-                        <td>
-                            <span class="alternate-code-badge">A102</span>
-                            <span class="alternate-code-badge">A103</span>
-                        </td>
-                        <td>2023-10-15</td>
-                        <td class="text-green-600">Buena continuidad</td>
-                        <td>
-                            <button class="action-btn" onclick="showDetails('A101')">
-                                <i class="fas fa-info-circle"></i> Detalles
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">B202</td>
-                        <td>
-                            <span class="alternate-code-badge">B203</span>
-                        </td>
-                        <td>2023-09-20</td>
-                        <td class="text-yellow-600">Continuidad media</td>
-                        <td>
-                            <button class="action-btn" onclick="showDetails('B202')">
-                                <i class="fas fa-info-circle"></i> Detalles
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">C303</td>
-                        <td>
-                            <span class="alternate-code-badge">C304</span>
-                            <span class="alternate-code-badge">C305</span>
-                            <span class="alternate-code-badge">C306</span>
-                        </td>
-                        <td>2023-11-05</td>
-                        <td class="text-green-600">Buena continuidad</td>
-                        <td>
-                            <button class="action-btn" onclick="showDetails('C303')">
-                                <i class="fas fa-info-circle"></i> Detalles
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">D404</td>
-                        <td>
-                            <span class="text-gray-500">No tiene códigos alternos</span>
-                        </td>
-                        <td>2023-07-30</td>
-                        <td class="text-red-600">Sin continuidad</td>
-                        <td>
-                            <button class="action-btn" onclick="showDetails('D404')">
-                                <i class="fas fa-info-circle"></i> Detalles
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <button class="export-btn mt-4">
-            Exportar a CSV
-        </button>
-    </div>
-</div>
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
 
-<!-- Modal para detalles -->
-<div id="detail-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeModal()">&times;</span>
-        <h3 class="text-lg font-bold mb-2">Detalles de Código</h3>
-        <div id="modal-details"></div>
-    </div>
-</div>
+        // Simular funcionalidad de filtros
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            button.addEventListener('click', function() {
+                alert('Filtros aplicados correctamente');
+            });
+        });
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-<script src="app.js"></script>
+        // Simular funcionalidad de exportación
+        document.querySelectorAll('.btn-success').forEach(button => {
+            button.addEventListener('click', function() {
+                alert('Datos exportados a CSV correctamente');
+            });
+        });
+    </script>
 </body>
 </html>
