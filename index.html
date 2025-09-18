@@ -210,6 +210,16 @@
             font-weight: 600;
         }
         
+        .positive {
+            color: #27ae60;
+            font-weight: 600;
+        }
+        
+        .warning {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
         .user-badge {
             background: rgba(255, 255, 255, 0.2);
             padding: 8px 15px;
@@ -218,6 +228,48 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .code-association {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
         }
         
         @keyframes fadeIn {
@@ -238,6 +290,10 @@
             .tabs-container {
                 overflow-x: auto;
                 flex-wrap: nowrap;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -391,26 +447,276 @@
             </button>
         </div>
 
-        <!-- Los otros módulos seguirían aquí -->
+        <!-- Módulo 3: Promedios de Clientes -->
         <div id="module-3" class="module-content">
             <div class="module-header">
                 <h2><i class="fas fa-users"></i> Promedios de Clientes</h2>
             </div>
-            <!-- Contenido del módulo 3 -->
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #4361ee;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-value">$62,500</div>
+                    <div class="stat-label">Promedio General</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #4cc9f0;">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="stat-value">15%</div>
+                    <div class="stat-label">Crecimiento Anual</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #f72585;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Clientes en Riesgo</div>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Cliente:</label>
+                    <select id="clientePromedioFilter" class="filter-select">
+                        <option value="">Todos</option>
+                        <option>Cliente 1</option>
+                        <option>Cliente 2</option>
+                        <option>Cliente 3</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Aplicar Filtros
+                </button>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Promedio Actual</th>
+                        <th>Promedio Histórico</th>
+                        <th>Tendencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cliente 1</td>
+                        <td>$55,000</td>
+                        <td>$70,000</td>
+                        <td class="highlight">A la baja</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 2</td>
+                        <td>$125,000</td>
+                        <td>$110,000</td>
+                        <td class="positive">En aumento</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>$11,500</td>
+                        <td>$20,000</td>
+                        <td class="highlight">A la baja</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 4</td>
+                        <td>$78,000</td>
+                        <td>$75,000</td>
+                        <td class="positive">Estable</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button class="btn btn-success">
+                <i class="fas fa-file-export"></i> Exportar a CSV
+            </button>
         </div>
 
+        <!-- Módulo 4: Recuperación de Marcas -->
         <div id="module-4" class="module-content">
             <div class="module-header">
                 <h2><i class="fas fa-tags"></i> Recuperación de Marcas</h2>
             </div>
-            <!-- Contenido del módulo 4 -->
+            
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Cliente:</label>
+                    <select id="clienteMarcaFilter" class="filter-select">
+                        <option value="">Todos</option>
+                        <option>Cliente 1</option>
+                        <option>Cliente 2</option>
+                        <option>Cliente 3</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Marca:</label>
+                    <select id="marcaFilter" class="filter-select">
+                        <option value="">Todas</option>
+                        <option>GTS</option>
+                        <option>CEAT</option>
+                        <option>LIYANG</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Aplicar Filtros
+                </button>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Marca</th>
+                        <th>Última Compra</th>
+                        <th>Días Transcurridos</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cliente 1</td>
+                        <td>GTS</td>
+                        <td>2025-05-20</td>
+                        <td>120</td>
+                        <td class="highlight">Crítico</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>LIYANG</td>
+                        <td>2025-03-20</td>
+                        <td>180</td>
+                        <td class="highlight">Crítico</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>KOLBEN</td>
+                        <td>2025-06-25</td>
+                        <td>85</td>
+                        <td class="warning">Alerta</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 2</td>
+                        <td>MTP</td>
+                        <td>2025-07-15</td>
+                        <td>15</td>
+                        <td class="positive">Normal</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button class="btn btn-success">
+                <i class="fas fa-file-export"></i> Exportar a CSV
+            </button>
         </div>
 
+        <!-- Módulo 5: Recuperación de Códigos -->
         <div id="module-5" class="module-content">
             <div class="module-header">
                 <h2><i class="fas fa-barcode"></i> Recuperación de Códigos</h2>
             </div>
-            <!-- Contenido del módulo 5 -->
+            
+            <div class="code-association">
+                <h3><i class="fas fa-link"></i> Asociar Códigos</h3>
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label>Código Madre:</label>
+                        <input type="text" class="filter-input" placeholder="Ej: A101">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Código Alterno:</label>
+                        <input type="text" class="filter-input" placeholder="Ej: A102">
+                    </div>
+                    
+                    <button class="btn btn-primary">
+                        <i class="fas fa-link"></i> Asociar Códigos
+                    </button>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Cliente:</label>
+                    <select id="clienteCodigoFilter" class="filter-select">
+                        <option value="">Todos</option>
+                        <option>Cliente 1</option>
+                        <option>Cliente 2</option>
+                        <option>Cliente 3</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Código Original:</label>
+                    <select id="codigoOriginalFilter" class="filter-select">
+                        <option value="">Todos</option>
+                        <option>A101</option>
+                        <option>B202</option>
+                        <option>C303</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Aplicar Filtros
+                </button>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Código Abandonado</th>
+                        <th>Última Compra Original</th>
+                        <th>Código Alterno</th>
+                        <th>Última Compra Alterno</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cliente 1</td>
+                        <td>A101</td>
+                        <td>2023-10-15</td>
+                        <td>A102</td>
+                        <td>2023-11-20</td>
+                        <td class="positive">Recuperado</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 2</td>
+                        <td>B202</td>
+                        <td>2023-06-10</td>
+                        <td>B203</td>
+                        <td>2023-09-15</td>
+                        <td class="positive">Recuperado</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>C303</td>
+                        <td>2023-03-20</td>
+                        <td>C304</td>
+                        <td>No comprado</td>
+                        <td class="highlight">Pendiente</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 4</td>
+                        <td>D404</td>
+                        <td>2023-07-30</td>
+                        <td>D405</td>
+                        <td>No comprado</td>
+                        <td class="highlight">Pendiente</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button class="btn btn-success">
+                <i class="fas fa-file-export"></i> Exportar a CSV
+            </button>
         </div>
     </div>
 
@@ -457,21 +763,19 @@
                 setTimeout(() => {
                     this.style.transform = 'scale(1)';
                 }, 150);
+                
+                // Simular funcionalidad
+                if (this.classList.contains('btn-primary')) {
+                    alert('Filtros aplicados correctamente');
+                } else if (this.classList.contains('btn-success')) {
+                    alert('Datos exportados a CSV correctamente');
+                }
             });
         });
 
-        // Simular funcionalidad de filtros
-        document.querySelectorAll('.btn-primary').forEach(button => {
-            button.addEventListener('click', function() {
-                alert('Filtros aplicados correctamente');
-            });
-        });
-
-        // Simular funcionalidad de exportación
-        document.querySelectorAll('.btn-success').forEach(button => {
-            button.addEventListener('click', function() {
-                alert('Datos exportados a CSV correctamente');
-            });
+        // Inicializar con la primera pestaña activa
+        document.addEventListener('DOMContentLoaded', function() {
+            switchTab('tab-1');
         });
     </script>
 </body>
