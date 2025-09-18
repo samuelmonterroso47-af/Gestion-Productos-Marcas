@@ -1,129 +1,105 @@
-// Función para cambiar entre pestañas
+// ------------------ Funciones ------------------
+
+// Cambiar entre pestañas
 function switchTab(tabId) {
-    // Ocultar todos los módulos
-    document.querySelectorAll('.module-content').forEach(module => {
-        module.classList.remove('active');
-    });
-    
-    // Desactivar todas las pestañas
-    document.querySelectorAll('.tab-button').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    
-    // Activar la pestaña seleccionada
+    document.querySelectorAll('.module-content').forEach(m => m.classList.remove('active'));
+    document.querySelectorAll('.tab-button').forEach(t => t.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
-    
-    // Mostrar el módulo correspondiente
     const moduleNumber = tabId.split('-')[1];
-    document.getElementById(`module-${moduleNumber}`).classList.add('active');
+    document.getElementById(`module-${moduleNumber}`)?.classList.add('active');
 }
 
-// Función para mostrar detalles
+// Mostrar detalles en modal
 function showDetails(code) {
-    let detailsHTML = `
+    const details = {
+        'A101': ['A102 - Compras: 2 (2023-09-10, 2023-10-05)', 'A103 - Compras: 1 (2023-08-15)'],
+        'B202': ['B203 - Compras: 1 (2023-08-22)'],
+        'C303': ['C304 - Compras: 2 (2023-10-12, 2023-11-01)', 'C305 - Compras: 1 (2023-09-18)', 'C306 - Compras: 2 (2023-10-20, 2023-11-02)']
+    };
+    const alternates = details[code] || ['No tiene códigos alternos'];
+    const html = `
         <p><strong>Código Madre:</strong> ${code}</p>
         <p><strong>Fecha Última Compra:</strong> 2023-10-15</p>
         <p><strong>Continuidad:</strong> Buena continuidad</p>
         <p class="mt-4"><strong>Códigos Alternos:</strong></p>
         <ul class="list-disc pl-5 mt-2">
-    `;
-    
-    if (code === 'A101') {
-        detailsHTML += `
-            <li>A102 - Compras: 2 (2023-09-10, 2023-10-05)</li>
-            <li>A103 - Compras: 1 (2023-08-15)</li>
-        `;
-    } else if (code === 'B202') {
-        detailsHTML += `
-            <li>B203 - Compras: 1 (2023-08-22)</li>
-        `;
-    } else if (code === 'C303') {
-        detailsHTML += `
-            <li>C304 - Compras: 2 (2023-10-12, 2023-11-01)</li>
-            <li>C305 - Compras: 1 (2023-09-18)</li>
-            <li>C306 - Compras: 2 (2023-10-20, 2023-11-02)</li>
-        `;
-    } else {
-        detailsHTML += `<li>No tiene códigos alternos</li>`;
-    }
-    
-    detailsHTML += `</ul>`;
-    
-    document.getElementById('modal-details').innerHTML = detailsHTML;
+            ${alternates.map(a => `<li>${a}</li>`).join('')}
+        </ul>`;
+    document.getElementById('modal-details').innerHTML = html;
     document.getElementById('detail-modal').style.display = 'flex';
 }
 
-// Función para cerrar modal
+// Cerrar modal
 function closeModal() {
     document.getElementById('detail-modal').style.display = 'none';
 }
 
-// Función para asociar código alterno
+// Asociar código alterno
 function associateAlternateCode() {
-    const motherCode = document.getElementById('motherCode').value.trim();
-    const alternateCode = document.getElementById('alternateCode').value.trim();
-    
-    if (!motherCode || !alternateCode) {
-        alert('Por favor, complete ambos campos');
-        return;
-    }
-    
-    alert(`Código alterno "${alternateCode}" asociado con éxito a "${motherCode}"`);
-    
-    // Limpiar campos
+    const mother = document.getElementById('motherCode').value.trim();
+    const alt = document.getElementById('alternateCode').value.trim();
+    if (!mother || !alt) return alert('Complete ambos campos');
+    alert(`Código alterno "${alt}" asociado a "${mother}"`);
     document.getElementById('motherCode').value = '';
     document.getElementById('alternateCode').value = '';
 }
 
-// Función para buscar códigos
+// Buscar códigos
 function searchCodes() {
-    const searchTerm = document.getElementById('codeSearch').value.toLowerCase();
-    alert(`Buscando: ${searchTerm}`);
-    // Aquí iría la lógica de búsqueda real
+    const term = document.getElementById('codeSearch').value.toLowerCase();
+    console.log(`Buscando: ${term}`);
+    // Lógica de búsqueda real aquí
 }
 
-// Inicialización cuando el DOM está cargado
-document.addEventListener('DOMContentLoaded', function() {
-    // Configurar event listeners para las pestañas
-    const tabs = document.querySelectorAll('.tab-button');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            switchTab(this.id);
+// Exportar tabla a CSV
+function exportTableToCSV(tableSelector, filename) {
+    const table = document.querySelector(tableSelector);
+    if (!table) return;
+    const csv = Array.from(table.rows)
+        .map(r => Array.from(r.cells).map(c => `"${c.innerText}"`).join(','))
+        .join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+}
+
+// ------------------ Inicialización ------------------
+document.addEventListener('DOMContentLoaded', () => {
+    // Pestañas
+    document.querySelectorAll('.tab-button').forEach(tab => tab.addEventListener('click', () => switchTab(tab.id)));
+
+    // Botones de filtros
+    ['applyFilter1','applyFilter2','applyFilter3','applyFilter4','applyFilter5'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.addEventListener('click', () => console.log(`Filtros aplicados: ${btn.dataset.label || id}`));
+    });
+
+    // Buscar y asociar códigos
+    document.getElementById('searchButton')?.addEventListener('click', searchCodes);
+    document.getElementById('associateButton')?.addEventListener('click', associateAlternateCode);
+    document.getElementById('codeSearch')?.addEventListener('keypress', e => { if(e.key==='Enter') searchCodes(); });
+
+    // Exportar CSV
+    document.querySelectorAll('.btn-success').forEach((btn, i) =>
+        btn.addEventListener('click', () => exportTableToCSV(`#module-${i+1} table`, `modulo${i+1}.csv`))
+    );
+
+    // Filtro ejemplo
+    const filter = document.getElementById('municipio3WHFilter');
+    if(filter) filter.addEventListener('change', function() {
+        const val = this.value.toLowerCase();
+        document.querySelectorAll('#module-1 tbody tr').forEach(row => {
+            row.style.display = (val === "" || row.cells[0].innerText.toLowerCase().includes(val)) ? "" : "none";
         });
     });
-    
-    // Configurar event listeners para los botones de aplicar filtros
-    document.getElementById('applyFilter1').addEventListener('click', function() {
-        alert('Filtros aplicados para Evaluación 3WH');
-    });
-    
-    document.getElementById('applyFilter2').addEventListener('click', function() {
-        alert('Filtros aplicados para Evaluación 2WH');
-    });
-    
-    document.getElementById('applyFilter3').addEventListener('click', function() {
-        alert('Filtros aplicados para Promedios de Clientes');
-    });
-    
-    document.getElementById('applyFilter4').addEventListener('click', function() {
-        alert('Filtros aplicados para Recuperación de Marcas');
-    });
-    
-    document.getElementById('applyFilter5').addEventListener('click', function() {
-        alert('Filtros aplicados para Recuperación de Códigos');
-    });
-    
-    // Configurar event listeners para el módulo de códigos
-    document.getElementById('searchButton').addEventListener('click', searchCodes);
-    document.getElementById('associateButton').addEventListener('click', associateAlternateCode);
-    
-    // Búsqueda al presionar Enter
-    document.getElementById('codeSearch').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            searchCodes();
-        }
-    });
-    
-    // Simular datos de usuario
-    document.getElementById('userIdDisplay').textContent = "UsuarioDemo123";
+
+    // Usuario simulado
+    const user = document.getElementById('userIdDisplay');
+    if(user) user.textContent = "UsuarioDemo123";
+
+    // Activar primera pestaña
+    const firstTab = document.querySelector('.tab-button');
+    if(firstTab) switchTab(firstTab.id);
 });
