@@ -195,6 +195,7 @@
 
         
         <!-- Módulo 3: Promedios de Clientes -->
+
 <div id="module-3" class="module-content">
     <div class="module-header">
         <h2><i class="fas fa-users"></i> Promedios de Clientes</h2>
@@ -304,6 +305,7 @@
        
 
         <!-- Módulo 4: Recuperación de Marcas -->
+
         <div id="module-4" class="module-content">
             <div class="module-header">
                 <h2><i class="fas fa-tags"></i> Recuperación de Marcas</h2>
@@ -384,6 +386,7 @@
 
 
         <!-- Módulo 4.1: Clientes Potenciales por Marca -->
+
 <div id="module-4-1" class="module-content">
     <div class="module-header">
         <h2><i class="fas fa-seedling"></i> Clientes Potenciales por Marca</h2>
@@ -579,6 +582,7 @@
 
 
 <!-- Módulo 5: Recuperación de Códigos -->
+
 <div id="module-5" class="module-content">
     <div class="module-header">
         <h2><i class="fas fa-barcode"></i> Recuperación de Códigos</h2>
@@ -683,6 +687,77 @@
         <i class="fas fa-file-export"></i> Exportar a CSV
     </button>
 </div>        
+
+<!-- Módulo 6: Oportunidades de Marca -->
+<div id="module-6" class="module-content">
+    <div class="module-header">
+        <h2><i class="fas fa-bullhorn"></i> Oportunidades de Marca</h2>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filter-section">
+        <div class="filter-group">
+            <label>Cliente:</label>
+            <select id="clienteMarcaFilter" class="filter-select">
+                <option value="">Todos</option>
+                <option>Cliente 1</option>
+                <option>Cliente 2</option>
+                <option>Cliente 3</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Marca:</label>
+            <select id="marcaPromoFilter" class="filter-select">
+                <option value="">Todas</option>
+                <option>Marca A</option>
+                <option>Marca B</option>
+                <option>Marca C</option>
+            </select>
+        </div>
+
+        <button class="btn btn-primary" id="applyFilter6">
+            <i class="fas fa-filter"></i> Aplicar Filtros
+        </button>
+    </div>
+
+    <!-- Tabla -->
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Marca</th>
+                <th>Estado</th>
+                <th>Acción Recomendada</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Cliente 1</td>
+                <td>Marca A</td>
+                <td class="highlight">Nunca comprado</td>
+                <td>Ofrecer combo de bienvenida</td>
+            </tr>
+            <tr>
+                <td>Cliente 2</td>
+                <td>Marca B</td>
+                <td class="highlight">Nunca comprado</td>
+                <td>Enviar catálogo y descuentos</td>
+            </tr>
+            <tr>
+                <td>Cliente 3</td>
+                <td>Marca C</td>
+                <td class="highlight">Nunca comprado</td>
+                <td>Campaña de capacitación</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="btn btn-success">
+        <i class="fas fa-file-export"></i> Exportar a CSV
+    </button>
+</div>
+
 
     </div>
  <!-- sql.js desde CDN -->
