@@ -382,6 +382,122 @@
             </button>
         </div>
 
+
+        <!-- Módulo 4.1: Clientes Potenciales por Marca -->
+<div id="module-4" class="module-content">
+    <div class="module-header">
+        <h2><i class="fas fa-seedling"></i> Clientes Potenciales por Marca</h2>
+    </div>
+
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #f72585;">
+                <i class="fas fa-user-slash"></i>
+            </div>
+            <div class="stat-value">12</div>
+            <div class="stat-label">Clientes sin compra</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #4361ee;">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="stat-value">8</div>
+            <div class="stat-label">Clientes nuevos</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #fbc02d;">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-value">5</div>
+            <div class="stat-label">Clientes en riesgo</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #4cc9f0;">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Clientes top</div>
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-group">
+            <label>Marca:</label>
+            <select id="marcaPotencialFilter" class="filter-select">
+                <option value="">Todas</option>
+                <option>Marca A</option>
+                <option>Marca B</option>
+                <option>Marca C</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Clasificación:</label>
+            <select id="clasificacionPotencialFilter" class="filter-select">
+                <option value="">Todas</option>
+                <option>Clientes sin compra</option>
+                <option>Clientes nuevos</option>
+                <option>Clientes en riesgo</option>
+                <option>Clientes top</option>
+            </select>
+        </div>
+        <button id="applyFilter4" class="btn btn-primary">
+            <i class="fas fa-filter"></i> Aplicar Filtros
+        </button>
+    </div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Marca</th>
+                <th>Mes Actual</th>
+                <th>Promedio 6 Meses</th>
+                <th>Promedio 3 Meses</th>
+                <th>Tendencia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-clasificacion="Clientes sin compra">
+                <td>Cliente 1</td>
+                <td>Marca A</td>
+                <td>$0</td>
+                <td>$0</td>
+                <td>$0</td>
+                <td class="highlight">Sin compra</td>
+            </tr>
+            <tr data-clasificacion="Clientes nuevos">
+                <td>Cliente 2</td>
+                <td>Marca B</td>
+                <td>$0</td>
+                <td>$500</td>
+                <td>$0</td>
+                <td class="highlight">Nuevo</td>
+            </tr>
+            <tr data-clasificacion="Clientes en riesgo">
+                <td>Cliente 3</td>
+                <td>Marca C</td>
+                <td>$0</td>
+                <td>$200</td>
+                <td>$100</td>
+                <td class="highlight">Riesgo</td>
+            </tr>
+            <tr data-clasificacion="Clientes top">
+                <td>Cliente 4</td>
+                <td>Marca A</td>
+                <td>$0</td>
+                <td>$1,500</td>
+                <td>$800</td>
+                <td class="positive">Top</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="btn btn-success">
+        <i class="fas fa-file-export"></i> Exportar a CSV
+    </button>
+</div>
+
+
         <!-- Módulo 5: Recuperación de Códigos -->
         <div id="module-5" class="module-content">
             <div class="module-header">
