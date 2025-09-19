@@ -259,35 +259,57 @@
             </div>
 
             <div id="module-5" class="module-content">
-                <div class="module-header">
-                    <h2><i class="fas fa-barcode"></i> Recuperación de Códigos</h2>
-                </div>
-                <div class="filter-section">
-                    <div class="filter-group">
-                        <label>Código:</label>
-                        <input type="text" id="codigoRecuperacionFilter" placeholder="Buscar código...">
-                    </div>
-                    <button id="applyFilter5" class="btn btn-primary"><i class="fas fa-filter"></i> Aplicar Filtros</button>
-                </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Última Compra</th>
-                                <th>Stock</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>P-1234</td>
-                                <td>2024-03-20</td>
-                                <td>15</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="module-header">
+        <h2><i class="fas fa-barcode"></i> Recuperación de Códigos</h2>
+    </div>
+    <div class="filter-section">
+        <div class="filter-group">
+            <label>Código:</label>
+            <input type="text" id="codigoRecuperacionFilter" placeholder="Buscar código...">
+        </div>
+        <button id="applyFilter5" class="btn btn-primary"><i class="fas fa-filter"></i> Aplicar Filtros</button>
+    </div>
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Código Madre</th>
+                    <th>Códigos Relacionados</th>
+                    <th>Última Fecha de Compra</th>
+                    <th>Días Transcurridos</th>
+                    <th>Comentario</th>
+                </tr>
+            </thead>
+            <tbody id="codigo-recuperacion-table-body">
+                <tr>
+                    <td>Repuestos El Águila</td>
+                    <td>P-1234</td>
+                    <td>P-1235, P-1236</td>
+                    <td>2024-03-20</td>
+                    <td>182</td>
+                    <td><span class="badge badge-danger">Crítico</span></td>
+                </tr>
+                <tr>
+                    <td>Taller San José</td>
+                    <td>A-5678</td>
+                    <td>A-5679</td>
+                    <td>2024-06-15</td>
+                    <td>95</td>
+                    <td><span class="badge badge-warning">Alerta</span></td>
+                </tr>
+                <tr>
+                    <td>Autoservicios del Sur</td>
+                    <td>B-9012</td>
+                    <td>N/A</td>
+                    <td>2024-08-01</td>
+                    <td>48</td>
+                    <td><span class="badge badge-success">Normal</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
         </div>
     </main>
