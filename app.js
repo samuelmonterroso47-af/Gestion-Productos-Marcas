@@ -128,3 +128,18 @@ async function cargarBD() {
 
 // Ejecutar
 cargarBD();
+
+function aplicarFiltros(modulo) {
+    const deptoFilter = document.getElementById(`departamento${modulo}Filter`).value.toLowerCase();
+    const muniFilter = document.getElementById(`municipio${modulo}Filter`).value.toLowerCase();
+    document.querySelectorAll(`#module-${modulo} tbody tr`).forEach(row => {
+        const depto = (row.dataset.departamento || "").toLowerCase();
+        const muni = row.cells[0].innerText.toLowerCase();
+        row.style.display = ((deptoFilter === "" || depto === deptoFilter) &&
+                             (muniFilter === "" || muni.includes(muniFilter))) ? "" : "none";
+    });
+}
+
+// Asociar botones
+document.getElementById('applyFilter1')?.addEventListener('click', () => aplicarFiltros(1));
+document.getElementById('applyFilter2')?.addEventListener('click', () => aplicarFiltros(2));
