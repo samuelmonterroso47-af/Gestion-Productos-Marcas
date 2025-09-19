@@ -113,58 +113,64 @@
 
 
         <!-- Módulo 2: Evaluación 2WH -->
-        <div id="module-2" class="module-content">
-            <div class="module-header">
-                <h2><i class="fas fa-bicycle"></i> Evaluación de Mercado (2WH)</h2>
-            </div>
-            
-            <div class="filter-section">
-                <div class="filter-group">
-                    <label>Municipio:</label>
-                    <select id="municipio2WHFilter" class="filter-select">
-                        <option value="">Todos</option>
-                        <option>Quetzaltenango</option>
-                        <option>Huehuetenango</option>
-                        <option>Cobán</option>
-                    </select>
-                </div>
-                
-                <button class="btn btn-primary">
-                    <i class="fas fa-filter"></i> Aplicar Filtros
-                </button>
-            </div>
-            
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Municipio</th>
-                        <th>Ventas Promedio</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Quetzaltenango</td>
-                        <td>$12,500</td>
-                        <td>Normal</td>
-                    </tr>
-                    <tr>
-                        <td>Huehuetenango</td>
-                        <td>$15,800</td>
-                        <td>Normal</td>
-                    </tr>
-                    <tr>
-                        <td>Cobán</td>
-                        <td class="highlight">$7,200</td>
-                        <td class="highlight">Por debajo de Q.10,000</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <button class="btn btn-success">
-                <i class="fas fa-file-export"></i> Exportar a CSV
-            </button>
+<div id="module-2" class="module-content">
+    <div class="module-header">
+        <h2><i class="fas fa-bicycle"></i> Evaluación de Mercado (2WH)</h2>
+    </div>
+    
+    <div class="filter-section">
+        <div class="filter-group">
+            <label>Municipio:</label>
+            <select id="municipio2WHFilter" class="filter-select">
+                <option value="">Todos</option>
+                <option>Quetzaltenango</option>
+                <option>Huehuetenango</option>
+                <option>Cobán</option>
+            </select>
         </div>
+        
+        <button id="applyFilter2" class="btn btn-primary">
+            <i class="fas fa-filter"></i> Aplicar Filtros
+        </button>
+    </div>
+    
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Municipio</th>
+                <th>Mes Actual</th>
+                <th>Ventas Promedio</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Quetzaltenango</td>
+                <td>$14,000</td>
+                <td>$12,500</td>
+                <td class="positive">Normal</td>
+            </tr>
+            <tr>
+                <td>Huehuetenango</td>
+                <td>$13,000</td>
+                <td>$15,800</td>
+                <td class="highlight">Mercado bajo promedio</td>
+            </tr>
+            <tr>
+                <td>Cobán</td>
+                <td>$7,500</td>
+                <td>$9,800</td>
+                <td class="warning">Promover / Crecer</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <button class="btn btn-success">
+        <i class="fas fa-file-export"></i> Exportar a CSV
+    </button>
+</div>
+
+
 
         <!-- Módulo 3: Promedios de Clientes -->
         <div id="module-3" class="module-content">
