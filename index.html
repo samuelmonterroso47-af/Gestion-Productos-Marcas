@@ -3,28 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Ventas</title>
+    <title>Dashboard de Ventas Modular</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 <body>
-
-    <header class="header">
-        <div class="header-content">
-            <div class="header-logo">
-                <i class="fas fa-chart-bar"></i>
-                <h1>Dashboard de Ventas</h1>
-            </div>
-            <div class="user-info">
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-chart-line"></i> Dashboard de Ventas</h1>
+            <div class="user-badge">
                 <i class="fas fa-user-circle"></i>
                 <span id="userIdDisplay">UsuarioDemo123</span>
             </div>
         </div>
-    </header>
 
-    <main class="main-container">
-
-        <nav class="tabs-container">
+        <div class="tabs-container">
             <button id="tab-1" class="tab-button active">
                 <i class="fas fa-motorcycle"></i> Mercado 3WH
             </button>
@@ -37,283 +31,660 @@
             <button id="tab-4" class="tab-button">
                 <i class="fas fa-tags"></i> Recuperación Marcas
             </button>
-            <button id="tab-4-1" class="tab-button">
-                <i class="fas fa-seedling"></i> Clientes Potenciales
-            </button>
             <button id="tab-5" class="tab-button">
                 <i class="fas fa-barcode"></i> Recuperación Códigos
             </button>
-        </nav>
+        </div>
 
-        <div class="content-container">
-
-            <div id="module-1" class="module-content active">
-                <div class="module-header">
-                    <h2><i class="fas fa-motorcycle"></i> Mercado 3WH</h2>
-                </div>
-                <div class="filter-section">
-                    <div class="filter-group">
-                        <label>Departamento:</label>
-                        <select id="departamento1Filter" class="filter-select">
-                            <option value="">Todos los departamentos</option>
-                            <option>Guatemala</option>
-                            <option>Quetzaltenango</option>
-                            <option>Alta Verapaz</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Municipio:</label>
-                        <select id="municipio1Filter" class="filter-select">
-                            <option value="">Todos los municipios</option>
-                            <option>Guatemala</option>
-                            <option>Quetzaltenango</option>
-                            <option>Cobán</option>
-                        </select>
-                    </div>
-                    <button id="applyFilter1" class="btn btn-primary"><i class="fas fa-filter"></i> Aplicar Filtros</button>
-                </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Municipio</th>
-                                <th>Participación (%)</th>
-                                <th>Recomendación</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr data-departamento="Guatemala">
-                                <td>Guatemala</td>
-                                <td>50%</td>
-                                <td>Mantener estrategia</td>
-                            </tr>
-                            <tr data-departamento="Quetzaltenango">
-                                <td>Quetzaltenango</td>
-                                <td>15%</td>
-                                <td>Incrementar visitas</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="module-2" class="module-content">
-                <div class="module-header">
-                    <h2><i class="fas fa-bicycle"></i> Mercado 2WH</h2>
-                </div>
-                <div class="filter-section">
-                    <div class="filter-group">
-                        <label>Departamento:</label>
-                        <select id="departamento2Filter" class="filter-select">
-                            <option value="">Todos los departamentos</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Municipio:</label>
-                        <select id="municipio2Filter" class="filter-select">
-                            <option value="">Todos los municipios</option>
-                        </select>
-                    </div>
-                    <button id="applyFilter2" class="btn btn-primary"><i class="fas fa-filter"></i> Aplicar Filtros</button>
-                </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Municipio</th>
-                                <th>Participación (%)</th>
-                                <th>Recomendación</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Mixco</td>
-                                <td>35%</td>
-                                <td>Analizar competidores</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div id="module-3" class="module-content">
-                <div class="module-header">
-                    <h2><i class="fas fa-users"></i> Promedios de Clientes</h2>
-                </div>
-                <div class="filter-section">
-                    <div class="filter-group">
-                        <label>Clasificación:</label>
-                        <select id="clientePromedioFilter" class="filter-select">
-                            <option value="">Todos</option>
-                            <option value="A">Clase A</option>
-                            <option value="B">Clase B</option>
-                            <option value="C">Clase C</option>
-                        </select>
-                    </div>
-                    <button id="applyFilter3" class="btn btn-primary"><i class="fas fa-filter"></i> Aplicar Filtros</button>
-                </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Cliente</th>
-                                <th>Compras Promedio</th>
-                                <th>Clasificación</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr data-clasificacion="A">
-                                <td>Cliente 1</td>
-                                <td>$1,500</td>
-                                <td>A</td>
-                            </tr>
-                            <tr data-clasificacion="C">
-                                <td>Cliente 2</td>
-                                <td>$300</td>
-                                <td>C</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="module-4" class="module-content">
-                <div class="module-header">
-                    <h2><i class="fas fa-tags"></i> Recuperación de Marcas</h2>
-                </div>
-                <div class="filter-section">
-                    <div class="filter-group">
-                        <label>Marca:</label>
-                        <select id="marcaRecuperacionFilter" class="filter-select">
-                            <option value="">Todas las marcas</option>
-                        </select>
-                    </div>
-                    <button id="applyFilter4" class="btn btn-primary"><i class="fas fa-filter"></i> Aplicar Filtros</button>
-                </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Cliente</th>
-                                <th>Fecha Última Compra</th>
-                                <th>Días sin Comprar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Cliente 3</td>
-                                <td>2024-05-10</td>
-                                <td>120</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="module-4-1" class="module-content">
-                <div class="module-header">
-                    <h2><i class="fas fa-seedling"></i> Clientes Potenciales por Marca</h2>
-                    <p class="module-description">Identifique clientes que nunca han comprado marcas específicas.</p>
-                </div>
-                <div class="filter-section">
-                    <div class="filter-group">
-                        <label>Marca:</label>
-                        <select id="marcaPotencialFilter" class="filter-select">
-                            <option value="">Todas las marcas</option>
-                            <option>GTS</option>
-                            <option>CEAT</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Departamento:</label>
-                        <select id="departamentoPotencialFilter" class="filter-select">
-                            <option value="">Todos los departamentos</option>
-                            <option>Quetzaltenango</option>
-                        </select>
-                    </div>
-                    <button id="applyFilter4-1" class="btn btn-primary"><i class="fas fa-filter"></i> Aplicar Filtros</button>
-                </div>
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Cliente</th>
-                                <th>Ubicación</th>
-                                <th>Marca nunca comprada</th>
-                            </tr>
-                        </thead>
-                        <tbody id="potential-clients-table-body">
-                            <tr>
-                                <td>Auto Repuestos Quetzaltenango</td>
-                                <td>Quetzaltenango</td>
-                                <td>GTS</td>
-                            </tr>
-                            <tr>
-                                <td>Talleres El Roble</td>
-                                <td>Huehuetenango</td>
-                                <td>CEAT</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="module-5" class="module-content">
+        <!-- Módulo 1: Evaluación 3WH -->
+         
+<div id="module-1" class="module-content active">
     <div class="module-header">
-        <h2><i class="fas fa-barcode"></i> Recuperación de Códigos</h2>
+        <h2><i class="fas fa-motorcycle"></i> Evaluación de Mercado (3WH Mototaxis)</h2>
     </div>
+    
     <div class="filter-section">
         <div class="filter-group">
-            <label>Código:</label>
-            <input type="text" id="codigoRecuperacionFilter" placeholder="Buscar código...">
+            <label>Participación Baja (%):</label>
+            <input type="number" id="marketShareThreshold" value="10" class="filter-input">
         </div>
-        <button id="applyFilter5" class="btn btn-primary"><i class="fas fa-filter"></i> Aplicar Filtros</button>
+
+        <div class="filter-group">
+            <label>Departamento:</label>
+            <select id="departamento3WHFilter" class="filter-select">
+                <option value="">Todos</option>
+                <option>Quetzaltenango</option>
+                <option>Huehuetenango</option>
+                <option>Alta Verapaz</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label>Municipio:</label>
+            <select id="municipio3WHFilter" class="filter-select">
+                <option value="">Todos</option>
+                <option>Quetzaltenango</option>
+                <option>Huehuetenango</option>
+                <option>Cobán</option>
+            </select>
+        </div>
+        
+        <button id="applyFilter1" class="btn btn-primary">
+            <i class="fas fa-filter"></i> Aplicar Filtros
+        </button>
     </div>
+    
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Municipio</th>
+                <th>Mototaxis Estimados</th>
+                <th>Mes Anterior</th>
+                <th>Participación % Mes Anterior</th>
+                <th>Mes Actual</th>
+                <th>Participación % Mes Actual</th>
+                <th>Recomendación</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-departamento="Quetzaltenango">
+                <td>Quetzaltenango</td>
+                <td>1,500</td>
+                <td>$450,000</td>
+                <td>30%</td>
+                <td>$500,000</td>
+                <td>33.33%</td>
+                <td>Mantener / Expandir</td>
+            </tr>
+            <tr data-departamento="Huehuetenango">
+                <td>Huehuetenango</td>
+                <td>2,000</td>
+                <td>$780,000</td>
+                <td>39%</td>
+                <td>$800,000</td>
+                <td>40%</td>
+                <td>Mantener / Expandir</td>
+            </tr>
+            <tr data-departamento="Alta Verapaz">
+                <td>Cobán</td>
+                <td>1,000</td>
+                <td>$90,000</td>
+                <td>9%</td>
+                <td>$100,000</td>
+                <td class="highlight">10%</td>
+                <td class="highlight">Enfocar en este municipio</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <button class="btn btn-success">
+        <i class="fas fa-file-export"></i> Exportar a CSV
+    </button>
+</div>
+
+
+
+        <!-- Módulo 2: Evaluación 2WH -->
+
+<div id="module-2" class="module-content">
+    <div class="module-header">
+        <h2><i class="fas fa-bicycle"></i> Evaluación de Mercado (2WH)</h2>
+    </div>
+    
+    <div class="filter-section">
+        <div class="filter-group">
+            <label>Departamento:</label>
+            <select id="departamento2WHFilter" class="filter-select">
+                <option value="">Todos</option>
+                <option>Quetzaltenango</option>
+                <option>Huehuetenango</option>
+                <option>Alta Verapaz</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Municipio:</label>
+            <select id="municipio2WHFilter" class="filter-select">
+                <option value="">Todos</option>
+                <option>Quetzaltenango</option>
+                <option>Huehuetenango</option>
+                <option>Cobán</option>
+            </select>
+        </div>
+        
+        <button id="applyFilter2" class="btn btn-primary">
+            <i class="fas fa-filter"></i> Aplicar Filtros
+        </button>
+    </div>
+    
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Municipio</th>
+                <th>Mes Actual</th>
+                <th>Ventas Promedio</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-departamento="Quetzaltenango">
+                <td>Quetzaltenango</td>
+                <td>$14,000</td>
+                <td>$12,500</td>
+                <td class="positive">Normal</td>
+            </tr>
+            <tr data-departamento="Huehuetenango">
+                <td>Huehuetenango</td>
+                <td>$13,000</td>
+                <td>$15,800</td>
+                <td class="highlight">Mercado bajo promedio</td>
+            </tr>
+            <tr data-departamento="Alta Verapaz">
+                <td>Cobán</td>
+                <td>$7,500</td>
+                <td>$9,800</td>
+                <td class="warning">Promover / Crecer</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <button class="btn btn-success">
+        <i class="fas fa-file-export"></i> Exportar a CSV
+    </button>
+</div>
+
+        
+        <!-- Módulo 3: Promedios de Clientes -->
+<div id="module-3" class="module-content">
+    <div class="module-header">
+        <h2><i class="fas fa-users"></i> Promedios de Clientes</h2>
+    </div>
+    
+    <!-- Tarjetas de resumen -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #f72585;">
+                <i class="fas fa-user-times"></i>
+            </div>
+            <div class="stat-value">5</div>
+            <div class="stat-label">Clientes sin compra</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #4cc9f0;">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Clientes nuevos</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #f97316;">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-value">8</div>
+            <div class="stat-label">Clientes en riesgo</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #4361ee;">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-value">4</div>
+            <div class="stat-label">Clientes top</div>
+        </div>
+    </div>
+    
+    <!-- Filtro -->
+    <div class="filter-section">
+        <div class="filter-group">
+            <label>Cliente:</label>
+            <select id="clientePromedioFilter" class="filter-select">
+                <option value="">Todos</option>
+                <option value="sin-compra">Clientes sin compra</option>
+                <option value="nuevo">Clientes nuevos</option>
+                <option value="riesgo">Clientes en riesgo</option>
+                <option value="top">Clientes top</option>
+            </select>
+        </div>
+        
+        <button class="btn btn-primary" id="applyFilter3">
+            <i class="fas fa-filter"></i> Aplicar Filtros
+        </button>
+    </div>
+    
+    <!-- Tabla -->
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Mes Actual</th>
+                <th>Promedio 6 meses</th>
+                <th>Promedio 3 meses</th>
+                <th>Tendencia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-clasificacion="nuevo">
+                <td>Cliente 1</td>
+                <td>$55,000</td>
+                <td>$70,000</td>
+                <td>$60,000</td>
+                <td class="highlight">A la baja</td>
+            </tr>
+            <tr data-clasificacion="top">
+                <td>Cliente 2</td>
+                <td>$125,000</td>
+                <td>$110,000</td>
+                <td>$120,000</td>
+                <td class="positive">En aumento</td>
+            </tr>
+            <tr data-clasificacion="riesgo">
+                <td>Cliente 3</td>
+                <td>$11,500</td>
+                <td>$20,000</td>
+                <td>$15,000</td>
+                <td class="highlight">A la baja</td>
+            </tr>
+            <tr data-clasificacion="sin-compra">
+                <td>Cliente 4</td>
+                <td>$0</td>
+                <td>$5,000</td>
+                <td>$4,500</td>
+                <td class="highlight">Sin compra</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <button class="btn btn-success">
+        <i class="fas fa-file-export"></i> Exportar a CSV
+    </button>
+</div>
+
+       
+
+        <!-- Módulo 4: Recuperación de Marcas -->
+        <div id="module-4" class="module-content">
+            <div class="module-header">
+                <h2><i class="fas fa-tags"></i> Recuperación de Marcas</h2>
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Cliente:</label>
+                    <select id="clienteMarcaFilter" class="filter-select">
+                        <option value="">Todos</option>
+                        <option>Cliente 1</option>
+                        <option>Cliente 2</option>
+                        <option>Cliente 3</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Marca:</label>
+                    <select id="marcaFilter" class="filter-select">
+                        <option value="">Todas</option>
+                        <option>GTS</option>
+                        <option>CEAT</option>
+                        <option>LIYANG</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Aplicar Filtros
+                </button>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Marca</th>
+                        <th>Última Compra</th>
+                        <th>Días Transcurridos</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cliente 1</td>
+                        <td>GTS</td>
+                        <td>2025-05-20</td>
+                        <td>120</td>
+                        <td class="highlight">Crítico</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>LIYANG</td>
+                        <td>2025-03-20</td>
+                        <td>180</td>
+                        <td class="highlight">Crítico</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>KOLBEN</td>
+                        <td>2025-06-25</td>
+                        <td>85</td>
+                        <td class="warning">Alerta</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 2</td>
+                        <td>MTP</td>
+                        <td>2025-07-15</td>
+                        <td>15</td>
+                        <td class="positive">Normal</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button class="btn btn-success">
+                <i class="fas fa-file-export"></i> Exportar a CSV
+            </button>
+        </div>
+
+
+        <!-- Módulo 4.1: Clientes Potenciales por Marca -->
+<div id="module-4-1" class="module-content">
+    <div class="module-header">
+        <h2><i class="fas fa-seedling"></i> Clientes Potenciales por Marca</h2>
+        <p class="module-description">Identifique clientes que nunca han comprado marcas específicas, representando oportunidades de crecimiento.</p>
+    </div>
+
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #f72585;">
+                <i class="fas fa-user-slash"></i>
+            </div>
+            <div class="stat-value">12</div>
+            <div class="stat-label">Clientes sin compra</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #4361ee;">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="stat-value">8</div>
+            <div class="stat-label">Clientes nuevos</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #fbc02d;">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-value">5</div>
+            <div class="stat-label">Clientes en riesgo</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #4cc9f0;">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Clientes top</div>
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-group">
+            <label>Marca:</label>
+            <select id="marcaPotencialFilter" class="filter-select">
+                <option value="">Todas las marcas</option>
+                <option>GTS</option>
+                <option>CEAT</option>
+                <option>LIYANG</option>
+                <option>KOLBEN</option>
+                <option>MTP</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Departamento:</label>
+            <select id="departamentoPotencialFilter" class="filter-select">
+                <option value="">Todos los departamentos</option>
+                <option>Quetzaltenango</option>
+                <option>Huehuetenango</option>
+                <option>Alta Verapaz</option>
+                <option>San Marcos</option>
+                <option>Quiché</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Municipio:</label>
+            <select id="municipioPotencialFilter" class="filter-select">
+                <option value="">Todos los municipios</option>
+                <option>Quetzaltenango</option>
+                <option>Huehuetenango</option>
+                <option>Cobán</option>
+                <option>San Marcos</option>
+                <option>Santa Cruz del Quiché</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Segmento:</label>
+            <select id="segmentoPotencialFilter" class="filter-select">
+                <option value="">Todos los segmentos</option>
+                <option>Grandes clientes</option>
+                <option>Medianos clientes</option>
+                <option>Pequeños clientes</option>
+                <option>Clientes nuevos</option>
+            </select>
+        </div>
+        <button id="applyFilter4" class="btn btn-primary">
+            <i class="fas fa-filter"></i> Aplicar Filtros
+        </button>
+        <button id="resetFilter4" class="btn btn-secondary">
+            <i class="fas fa-redo"></i> Limpiar
+        </button>
+    </div>
+
     <div class="table-container">
         <table class="data-table">
             <thead>
                 <tr>
                     <th>Cliente</th>
-                    <th>Código Madre</th>
-                    <th>Códigos Relacionados</th>
-                    <th>Última Fecha de Compra</th>
-                    <th>Días Transcurridos</th>
-                    <th>Comentario</th>
+                    <th>Ubicación</th>
+                    <th>Marca nunca comprada</th>
+                    <th>Otras marcas compradas</th>
+                    <th>Volumen promedio mensual</th>
+                    <th>Potencial estimado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody id="codigo-recuperacion-table-body">
+            <tbody>
                 <tr>
-                    <td>Repuestos El Águila</td>
-                    <td>P-1234</td>
-                    <td>P-1235, P-1236</td>
-                    <td>2024-03-20</td>
-                    <td>182</td>
-                    <td><span class="badge badge-danger">Crítico</span></td>
+                    <td>Auto Repuestos Quetzaltenango</td>
+                    <td>Quetzaltenango, Quetzaltenango</td>
+                    <td><span class="badge badge-warning">GTS</span></td>
+                    <td>CEAT, LIYANG</td>
+                    <td>$4,500</td>
+                    <td><span class="badge badge-success">Alto</span></td>
+                    <td>
+                        <button class="btn-action" title="Contactar"><i class="fas fa-phone"></i></button>
+                        <button class="btn-action" title="Enviar oferta"><i class="fas fa-envelope"></i></button>
+                        <button class="btn-action" title="Ver historial"><i class="fas fa-history"></i></button>
+                    </td>
                 </tr>
                 <tr>
-                    <td>Taller San José</td>
-                    <td>A-5678</td>
-                    <td>A-5679</td>
-                    <td>2024-06-15</td>
-                    <td>95</td>
-                    <td><span class="badge badge-warning">Alerta</span></td>
+                    <td>Talleres Hernández</td>
+                    <td>Huehuetenango, Huehuetenango</td>
+                    <td><span class="badge badge-warning">CEAT</span></td>
+                    <td>GTS, MTP</td>
+                    <td>$3,200</td>
+                    <td><span class="badge badge-medium">Medio</span></td>
+                    <td>
+                        <button class="btn-action" title="Contactar"><i class="fas fa-phone"></i></button>
+                        <button class="btn-action" title="Enviar oferta"><i class="fas fa-envelope"></i></button>
+                        <button class="btn-action" title="Ver historial"><i class="fas fa-history"></i></button>
+                    </td>
                 </tr>
                 <tr>
-                    <td>Autoservicios del Sur</td>
-                    <td>B-9012</td>
-                    <td>N/A</td>
-                    <td>2024-08-01</td>
-                    <td>48</td>
-                    <td><span class="badge badge-success">Normal</span></td>
+                    <td>Repuestos Cobán</td>
+                    <td>Cobán, Alta Verapaz</td>
+                    <td><span class="badge badge-warning">LIYANG</span></td>
+                    <td>GTS, KOLBEN</td>
+                    <td>$2,800</td>
+                    <td><span class="badge badge-high">Muy alto</span></td>
+                    <td>
+                        <button class="btn-action" title="Contactar"><i class="fas fa-phone"></i></button>
+                        <button class="btn-action" title="Enviar oferta"><i class="fas fa-envelope"></i></button>
+                        <button class="btn-action" title="Ver historial"><i class="fas fa-history"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Distribuidora San Marcos</td>
+                    <td>San Marcos, San Marcos</td>
+                    <td><span class="badge badge-warning">KOLBEN</span></td>
+                    <td>CEAT, MTP</td>
+                    <td>$5,100</td>
+                    <td><span class="badge badge-success">Alto</span></td>
+                    <td>
+                        <button class="btn-action" title="Contactar"><i class="fas fa-phone"></i></button>
+                        <button class="btn-action" title="Enviar oferta"><i class="fas fa-envelope"></i></button>
+                        <button class="btn-action" title="Ver historial"><i class="fas fa-history"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Repuestos Quiché</td>
+                    <td>Santa Cruz del Quiché, Quiché</td>
+                    <td><span class="badge badge-warning">MTP</span></td>
+                    <td>LIYANG, KOLBEN</td>
+                    <td>$1,900</td>
+                    <td><span class="badge badge-low">Bajo</span></td>
+                    <td>
+                        <button class="btn-action" title="Contactar"><i class="fas fa-phone"></i></button>
+                        <button class="btn-action" title="Enviar oferta"><i class="fas fa-envelope"></i></button>
+                        <button class="btn-action" title="Ver historial"><i class="fas fa-history"></i></button>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+    <div class="module-footer">
+        <div class="export-options">
+            <button class="btn btn-success">
+                <i class="fas fa-file-export"></i> Exportar a CSV
+            </button>
+            <button class="btn btn-info">
+                <i class="fas fa-print"></i> Imprimir Reporte
+            </button>
+        </div>
+        
+        <div class="pagination">
+            <span>Mostrando 5 de 32 clientes potenciales</span>
+            <div class="pagination-controls">
+                <button class="btn-pagination" disabled><i class="fas fa-chevron-left"></i></button>
+                <span class="pagination-page">1</span>
+                <button class="btn-pagination"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
 </div>
 
-        </div>
-    </main>
 
-    <script src="app.js"></script>
+        <!-- Módulo 5: Recuperación de Códigos -->
+        <div id="module-5" class="module-content">
+            <div class="module-header">
+                <h2><i class="fas fa-barcode"></i> Recuperación de Códigos</h2>
+            </div>
+            
+            <div class="code-association">
+                <h3><i class="fas fa-link"></i> Asociar Códigos</h3>
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label>Código Madre:</label>
+                        <input type="text" class="filter-input" placeholder="Ej: A101">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Código Alterno:</label>
+                        <input type="text" class="filter-input" placeholder="Ej: A102">
+                    </div>
+                    
+                    <button class="btn btn-primary">
+                        <i class="fas fa-link"></i> Asociar Códigos
+                    </button>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Cliente:</label>
+                    <select id="clienteCodigoFilter" class="filter-select">
+                        <option value="">Todos</option>
+                        <option>Cliente 1</option>
+                        <option>Cliente 2</option>
+                        <option>Cliente 3</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Código Original:</label>
+                    <select id="codigoOriginalFilter" class="filter-select">
+                        <option value="">Todos</option>
+                        <option>A101</option>
+                        <option>B202</option>
+                        <option>C303</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Aplicar Filtros
+                </button>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Código Abandonado</th>
+                        <th>Última Compra Original</th>
+                        <th>Código Alterno</th>
+                        <th>Última Compra Alterno</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cliente 1</td>
+                        <td>A101</td>
+                        <td>2023-10-15</td>
+                        <td>A102</td>
+                        <td>2023-11-20</td>
+                        <td class="positive">Recuperado</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 2</td>
+                        <td>B202</td>
+                        <td>2023-06-10</td>
+                        <td>B203</td>
+                        <td>2023-09-15</td>
+                        <td class="positive">Recuperado</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>C303</td>
+                        <td>2023-03-20</td>
+                        <td>C304</td>
+                        <td>No comprado</td>
+                        <td class="highlight">Pendiente</td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 4</td>
+                        <td>D404</td>
+                        <td>2023-07-30</td>
+                        <td>D405</td>
+                        <td>No comprado</td>
+                        <td class="highlight">Pendiente</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button class="btn btn-success">
+                <i class="fas fa-file-export"></i> Exportar a CSV
+            </button>
+        </div>
+    </div>
+ <!-- sql.js desde CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+ <!-- app.js --> 
+<script src="app.js"></script>
 </body>
 </html>
+
