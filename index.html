@@ -193,97 +193,115 @@
     </button>
 </div>
 
-
-
+        
         <!-- Módulo 3: Promedios de Clientes -->
-        <div id="module-3" class="module-content">
-            <div class="module-header">
-                <h2><i class="fas fa-users"></i> Promedios de Clientes</h2>
+<div id="module-3" class="module-content">
+    <div class="module-header">
+        <h2><i class="fas fa-users"></i> Promedios de Clientes</h2>
+    </div>
+    
+    <!-- Tarjetas de resumen -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #f72585;">
+                <i class="fas fa-user-times"></i>
             </div>
-            
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-icon" style="color: #4361ee;">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="stat-value">$62,500</div>
-                    <div class="stat-label">Promedio General</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon" style="color: #4cc9f0;">
-                        <i class="fas fa-arrow-up"></i>
-                    </div>
-                    <div class="stat-value">15%</div>
-                    <div class="stat-label">Crecimiento Anual</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon" style="color: #f72585;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div class="stat-value">8</div>
-                    <div class="stat-label">Clientes en Riesgo</div>
-                </div>
-            </div>
-            
-            <div class="filter-section">
-                <div class="filter-group">
-                    <label>Cliente:</label>
-                    <select id="clientePromedioFilter" class="filter-select">
-                        <option value="">Todos</option>
-                        <option>Cliente 1</option>
-                        <option>Cliente 2</option>
-                        <option>Cliente 3</option>
-                    </select>
-                </div>
-                
-                <button class="btn btn-primary">
-                    <i class="fas fa-filter"></i> Aplicar Filtros
-                </button>
-            </div>
-            
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Promedio Actual</th>
-                        <th>Promedio Histórico</th>
-                        <th>Tendencia</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Cliente 1</td>
-                        <td>$55,000</td>
-                        <td>$70,000</td>
-                        <td class="highlight">A la baja</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 2</td>
-                        <td>$125,000</td>
-                        <td>$110,000</td>
-                        <td class="positive">En aumento</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>$11,500</td>
-                        <td>$20,000</td>
-                        <td class="highlight">A la baja</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 4</td>
-                        <td>$78,000</td>
-                        <td>$75,000</td>
-                        <td class="positive">Estable</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <button class="btn btn-success">
-                <i class="fas fa-file-export"></i> Exportar a CSV
-            </button>
+            <div class="stat-value">5</div>
+            <div class="stat-label">Clientes sin compra</div>
         </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #4cc9f0;">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="stat-value">3</div>
+            <div class="stat-label">Clientes nuevos</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #f97316;">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-value">8</div>
+            <div class="stat-label">Clientes en riesgo</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon" style="color: #4361ee;">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-value">4</div>
+            <div class="stat-label">Clientes top</div>
+        </div>
+    </div>
+    
+    <!-- Filtro -->
+    <div class="filter-section">
+        <div class="filter-group">
+            <label>Cliente:</label>
+            <select id="clientePromedioFilter" class="filter-select">
+                <option value="">Todos</option>
+                <option value="sin-compra">Clientes sin compra</option>
+                <option value="nuevo">Clientes nuevos</option>
+                <option value="riesgo">Clientes en riesgo</option>
+                <option value="top">Clientes top</option>
+            </select>
+        </div>
+        
+        <button class="btn btn-primary" id="applyFilter3">
+            <i class="fas fa-filter"></i> Aplicar Filtros
+        </button>
+    </div>
+    
+    <!-- Tabla -->
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Mes Actual</th>
+                <th>Promedio 6 meses</th>
+                <th>Promedio 3 meses</th>
+                <th>Tendencia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-clasificacion="nuevo">
+                <td>Cliente 1</td>
+                <td>$55,000</td>
+                <td>$70,000</td>
+                <td>$60,000</td>
+                <td class="highlight">A la baja</td>
+            </tr>
+            <tr data-clasificacion="top">
+                <td>Cliente 2</td>
+                <td>$125,000</td>
+                <td>$110,000</td>
+                <td>$120,000</td>
+                <td class="positive">En aumento</td>
+            </tr>
+            <tr data-clasificacion="riesgo">
+                <td>Cliente 3</td>
+                <td>$11,500</td>
+                <td>$20,000</td>
+                <td>$15,000</td>
+                <td class="highlight">A la baja</td>
+            </tr>
+            <tr data-clasificacion="sin-compra">
+                <td>Cliente 4</td>
+                <td>$0</td>
+                <td>$5,000</td>
+                <td>$4,500</td>
+                <td class="highlight">Sin compra</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <button class="btn btn-success">
+        <i class="fas fa-file-export"></i> Exportar a CSV
+    </button>
+</div>
+
+       
 
         <!-- Módulo 4: Recuperación de Marcas -->
         <div id="module-4" class="module-content">

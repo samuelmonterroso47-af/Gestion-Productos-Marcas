@@ -143,3 +143,14 @@ function aplicarFiltros(modulo) {
 // Asociar botones
 document.getElementById('applyFilter1')?.addEventListener('click', () => aplicarFiltros(1));
 document.getElementById('applyFilter2')?.addEventListener('click', () => aplicarFiltros(2));
+
+
+// Filtro por clasificación
+    function aplicarFiltroClientes() {
+        const filtro = document.getElementById('clientePromedioFilter').value;
+        document.querySelectorAll('#module-3 tbody tr').forEach(row => {
+            row.style.display = (filtro === "" || row.dataset.clasificacion === filtro) ? "" : "none";
+        });
+    }
+
+    document.getElementById('applyFilter3')?.addEventListener('click', aplicarFiltroClientes);
