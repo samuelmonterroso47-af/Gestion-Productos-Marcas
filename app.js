@@ -1,12 +1,16 @@
-// ------------------ Funciones ------------------
+// ------------------ Funciones Generales ------------------
 
 // Cambiar entre pestañas
 function switchTab(tabId) {
     document.querySelectorAll('.module-content').forEach(m => m.classList.remove('active'));
     document.querySelectorAll('.tab-button').forEach(t => t.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
+    
+    const tab = document.getElementById(tabId);
+    if (tab) tab.classList.add('active');
+
     const moduleNumber = tabId.split('-')[1];
-    document.getElementById(`module-${moduleNumber}`)?.classList.add('active');
+    const module = document.getElementById(`module-${moduleNumber}`);
+    if (module) module.classList.add('active');
 }
 
 // Mostrar detalles en modal
@@ -16,6 +20,7 @@ function showDetails(code) {
         'B202': ['B203 - Compras: 1 (2023-08-22)'],
         'C303': ['C304 - Compras: 2 (2023-10-12, 2023-11-01)', 'C305 - Compras: 1 (2023-09-18)', 'C306 - Compras: 2 (2023-10-20, 2023-11-02)']
     };
+
     const alternates = details[code] || ['No tiene códigos alternos'];
     const html = `
         <p><strong>Código Madre:</strong> ${code}</p>
@@ -24,14 +29,17 @@ function showDetails(code) {
         <p class="mt-4"><strong>Códigos Alternos:</strong></p>
         <ul class="list-disc pl-5 mt-2">
             ${alternates.map(a => `<li>${a}</li>`).join('')}
-        </ul>`;
+        </ul>
+    `;
+    const modal = document.getElementById('detail-modal');
     document.getElementById('modal-details').innerHTML = html;
-    document.getElementById('detail-modal').style.display = 'flex';
+    if (modal) modal.style.display = 'flex';
 }
 
 // Cerrar modal
 function closeModal() {
-    document.getElementById('detail-modal').style.display = 'none';
+    const modal = document.getElementById('detail-modal');
+    if (modal) modal.style.display = 'none';
 }
 
 // Asociar código alterno
@@ -48,7 +56,7 @@ function associateAlternateCode() {
 function searchCodes() {
     const term = document.getElementById('codeSearch').value.toLowerCase();
     console.log(`Buscando: ${term}`);
-    // Lógica de búsqueda real aquí
+    // Aquí iría la lógica real de búsqueda
 }
 
 // Exportar tabla a CSV
@@ -65,6 +73,43 @@ function exportTableToCSV(tableSelector, filename) {
     link.click();
 }
 
+// ------------------ Funciones de filtros ------------------
+
+// Filtro genérico por módulo
+function aplicarFiltros(modulo) {
+    const deptoFilter = document.getElementById(`departamento${modulo}Filter`)?.value.toLowerCase() || "";
+    const muniFilter = document.getElementById(`municipio${modulo}Filter`)?.value.toLowerCase() || "";
+
+    document.querySelectorAll(`#module-${modulo} tbody tr`).forEach(row => {
+        const depto = (row.dataset.departamento || "").toLowerCase();
+        const muni = row.cells[0].innerText.toLowerCase();
+        row.style.display = ((deptoFilter === "" || depto === deptoFilter) &&
+                             (muniFilter === "" || muni.includes(muniFilter))) ? "" : "none";
+    });
+}
+
+// Filtro específico por clasificación de clientes (módulo 3)
+function aplicarFiltroClientes() {
+    const filtro = document.getElementById('clientePromedioFilter')?.value || "";
+    document.querySelectorAll('#module-3 tbody tr').forEach(row => {
+        row.style.display = (filtro === "" || row.dataset.clasificacion === filtro) ? "" : "none";
+    });
+}
+
+// ------------------ Base de Datos ------------------
+
+async function cargarBD() {
+    const SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}` });
+    const url = './dashboard3wh.db';
+    const res = await fetch(url);
+    const buffer = await res.arrayBuffer();
+    const db = new SQL.Database(new Uint8Array(buffer));
+
+    const resultado = db.exec("SELECT * FROM ventas LIMIT 5");
+    console.log("Resultado:", resultado);
+    document.getElementById("resultado").innerText = JSON.stringify(resultado, null, 2);
+}
+
 // ------------------ Inicialización ------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Pestañas
@@ -73,7 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botones de filtros
     ['applyFilter1','applyFilter2','applyFilter3','applyFilter4','applyFilter5'].forEach(id => {
         const btn = document.getElementById(id);
-        if (btn) btn.addEventListener('click', () => console.log(`Filtros aplicados: ${btn.dataset.label || id}`));
+        if (btn) btn.addEventListener('click', () => {
+            if (id === 'applyFilter3') aplicarFiltroClientes();
+            else aplicarFiltros(parseInt(id.replace(/\D/g,'')));
+        });
     });
 
     // Buscar y asociar códigos
@@ -86,9 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => exportTableToCSV(`#module-${i+1} table`, `modulo${i+1}.csv`))
     );
 
-    // Filtro ejemplo
-    const filter = document.getElementById('municipio3WHFilter');
-    if(filter) filter.addEventListener('change', function() {
+    // Filtro ejemplo 3WH
+    document.getElementById('municipio3WHFilter')?.addEventListener('change', function() {
         const val = this.value.toLowerCase();
         document.querySelectorAll('#module-1 tbody tr').forEach(row => {
             row.style.display = (val === "" || row.cells[0].innerText.toLowerCase().includes(val)) ? "" : "none";
@@ -102,55 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Activar primera pestaña
     const firstTab = document.querySelector('.tab-button');
     if(firstTab) switchTab(firstTab.id);
+
+    // Cargar BD
+    cargarBD();
 });
-
-// app.js
-async function cargarBD() {
-  // Inicializar SQL.js
-  const SQL = await initSqlJs({
-    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
-  });
-
-  // URL del archivo local. Usa una ruta relativa.
-  const url = './dashboard3wh.db';
-  const res = await fetch(url);
-  const buffer = await res.arrayBuffer();
-  const db = new SQL.Database(new Uint8Array(buffer));
-
-  // Probar consulta simple
-  const resultado = db.exec("SELECT * FROM ventas LIMIT 5"); // ajusta el nombre de la tabla
-
-  console.log("Resultado:", resultado);
-
-  // Mostrarlo en tu dashboard si quieres
-  document.getElementById("resultado").innerText = JSON.stringify(resultado, null, 2);
-}
-
-// Ejecutar
-cargarBD();
-
-function aplicarFiltros(modulo) {
-    const deptoFilter = document.getElementById(`departamento${modulo}Filter`).value.toLowerCase();
-    const muniFilter = document.getElementById(`municipio${modulo}Filter`).value.toLowerCase();
-    document.querySelectorAll(`#module-${modulo} tbody tr`).forEach(row => {
-        const depto = (row.dataset.departamento || "").toLowerCase();
-        const muni = row.cells[0].innerText.toLowerCase();
-        row.style.display = ((deptoFilter === "" || depto === deptoFilter) &&
-                             (muniFilter === "" || muni.includes(muniFilter))) ? "" : "none";
-    });
-}
-
-// Asociar botones
-document.getElementById('applyFilter1')?.addEventListener('click', () => aplicarFiltros(1));
-document.getElementById('applyFilter2')?.addEventListener('click', () => aplicarFiltros(2));
-
-
-// Filtro por clasificación
-    function aplicarFiltroClientes() {
-        const filtro = document.getElementById('clientePromedioFilter').value;
-        document.querySelectorAll('#module-3 tbody tr').forEach(row => {
-            row.style.display = (filtro === "" || row.dataset.clasificacion === filtro) ? "" : "none";
-        });
-    }
-
-    document.getElementById('applyFilter3')?.addEventListener('click', aplicarFiltroClientes);
