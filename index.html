@@ -578,108 +578,93 @@
 </div>
 
 
-        <!-- Módulo 5: Recuperación de Códigos -->
-        <div id="module-5" class="module-content">
-            <div class="module-header">
-                <h2><i class="fas fa-barcode"></i> Recuperación de Códigos</h2>
-            </div>
-            
-            <div class="code-association">
-                <h3><i class="fas fa-link"></i> Asociar Códigos</h3>
-                <div class="filter-section">
-                    <div class="filter-group">
-                        <label>Código Madre:</label>
-                        <input type="text" class="filter-input" placeholder="Ej: A101">
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label>Código Alterno:</label>
-                        <input type="text" class="filter-input" placeholder="Ej: A102">
-                    </div>
-                    
-                    <button class="btn btn-primary">
-                        <i class="fas fa-link"></i> Asociar Códigos
-                    </button>
-                </div>
-            </div>
-            
-            <div class="filter-section">
-                <div class="filter-group">
-                    <label>Cliente:</label>
-                    <select id="clienteCodigoFilter" class="filter-select">
-                        <option value="">Todos</option>
-                        <option>Cliente 1</option>
-                        <option>Cliente 2</option>
-                        <option>Cliente 3</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <label>Código Original:</label>
-                    <select id="codigoOriginalFilter" class="filter-select">
-                        <option value="">Todos</option>
-                        <option>A101</option>
-                        <option>B202</option>
-                        <option>C303</option>
-                    </select>
-                </div>
-                
-                <button class="btn btn-primary">
-                    <i class="fas fa-filter"></i> Aplicar Filtros
-                </button>
-            </div>
-            
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Código Abandonado</th>
-                        <th>Última Compra Original</th>
-                        <th>Código Alterno</th>
-                        <th>Última Compra Alterno</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Cliente 1</td>
-                        <td>A101</td>
-                        <td>2023-10-15</td>
-                        <td>A102</td>
-                        <td>2023-11-20</td>
-                        <td class="positive">Recuperado</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 2</td>
-                        <td>B202</td>
-                        <td>2023-06-10</td>
-                        <td>B203</td>
-                        <td>2023-09-15</td>
-                        <td class="positive">Recuperado</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>C303</td>
-                        <td>2023-03-20</td>
-                        <td>C304</td>
-                        <td>No comprado</td>
-                        <td class="highlight">Pendiente</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 4</td>
-                        <td>D404</td>
-                        <td>2023-07-30</td>
-                        <td>D405</td>
-                        <td>No comprado</td>
-                        <td class="highlight">Pendiente</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <button class="btn btn-success">
-                <i class="fas fa-file-export"></i> Exportar a CSV
-            </button>
+<!-- Módulo 5: Recuperación de Códigos -->
+<div id="module-5" class="module-content">
+    <div class="module-header">
+        <h2><i class="fas fa-barcode"></i> Recuperación de Códigos</h2>
+    </div>
+    
+    <!-- Filtros -->
+    <div class="filter-section">
+        <div class="filter-group">
+            <label>Cliente:</label>
+            <select id="clienteCodigoFilter" class="filter-select">
+                <option value="">Todos</option>
+                <option>Cliente 1</option>
+                <option>Cliente 2</option>
+                <option>Cliente 3</option>
+            </select>
         </div>
+        
+        <div class="filter-group">
+            <label>Código:</label>
+            <select id="codigoFilter" class="filter-select">
+                <option value="">Todos</option>
+                <option>A101</option>
+                <option>B202</option>
+                <option>C303</option>
+            </select>
+        </div>
+        
+        <button class="btn btn-primary" id="applyFilter5">
+            <i class="fas fa-filter"></i> Aplicar Filtros
+        </button>
+    </div>
+    
+    <!-- Tabla -->
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Código</th>
+                <th>Códigos Relacionados</th>
+                <th>Última Compra</th>
+                <th>Días Transcurridos</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Cliente 1</td>
+                <td>A101</td>
+                <td>A102, A103</td>
+                <td>2023-11-20</td>
+                <td>30</td>
+                <td class="positive">Recuperado</td>
+            </tr>
+            <tr>
+                <td>Cliente 2</td>
+                <td>B202</td>
+                <td>B203</td>
+                <td>2023-09-15</td>
+                <td>90</td>
+                <td class="positive">Recuperado</td>
+            </tr>
+            <tr>
+                <td>Cliente 3</td>
+                <td>C303</td>
+                <td>C304, C305</td>
+                <td>2023-03-20</td>
+                <td>180</td>
+                <td class="highlight">Pendiente</td>
+            </tr>
+            <tr>
+                <td>Cliente 4</td>
+                <td>D404</td>
+                <td>D405</td>
+                <td>No comprado</td>
+                <td>-</td>
+                <td class="highlight">Pendiente</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <button class="btn btn-success">
+        <i class="fas fa-file-export"></i> Exportar a CSV
+    </button>
+</div>
+        
+
     </div>
  <!-- sql.js desde CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
