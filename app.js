@@ -103,3 +103,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const firstTab = document.querySelector('.tab-button');
     if(firstTab) switchTab(firstTab.id);
 });
+
+// app.js
+async function cargarBD() {
+  // Inicializar SQL.js
+  const SQL = await initSqlJs({
+    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+  });
+
+  // URL del archivo local. Usa una ruta relativa.
+  const url = './dashboard3wh.db';
+  const res = await fetch(url);
+  const buffer = await res.arrayBuffer();
+  const db = new SQL.Database(new Uint8Array(buffer));
+
+  // Probar consulta simple
+  const resultado = db.exec("SELECT * FROM ventas LIMIT 5"); // ajusta el nombre de la tabla
+
+  console.log("Resultado:", resultado);
+
+  // Mostrarlo en tu dashboard si quieres
+  document.getElementById("resultado").innerText = JSON.stringify(resultado, null, 2);
+}
+
+// Ejecutar
+cargarBD();
