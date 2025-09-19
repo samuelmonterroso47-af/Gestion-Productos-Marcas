@@ -1,71 +1,34 @@
 // ------------------ Funciones Generales ------------------
 
-// Cambiar entre pestañas
+/**
+ * Muestra el módulo y la pestaña correspondientes al ID.
+ * @param {string} tabId El ID del botón de la pestaña (ej. 'tab-1').
+ */
 function switchTab(tabId) {
-    document.querySelectorAll('.module-content').forEach(m => m.classList.remove('active'));
-    document.querySelectorAll('.tab-button').forEach(t => t.classList.remove('active'));
+    // Desactiva todos los botones de las pestañas
+    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+    // Desactiva todos los contenidos de los módulos
+    document.querySelectorAll('.module-content').forEach(content => content.classList.remove('active'));
     
-    const tab = document.getElementById(tabId);
-    if (tab) tab.classList.add('active');
-
-    const moduleNumber = tabId.split('-')[1];
-    const module = document.getElementById(`module-${moduleNumber}`);
-    if (module) module.classList.add('active');
+    // Activa la pestaña y el módulo correctos
+    const targetModuleId = tabId.replace('tab-', 'module-');
+    document.getElementById(tabId).classList.add('active');
+    document.getElementById(targetModuleId).classList.add('active');
 }
 
-// Mostrar detalles en modal
-function showDetails(code) {
-    const details = {
-        'A101': ['A102 - Compras: 2 (2023-09-10, 2023-10-05)', 'A103 - Compras: 1 (2023-08-15)'],
-        'B202': ['B203 - Compras: 1 (2023-08-22)'],
-        'C303': ['C304 - Compras: 2 (2023-10-12, 2023-11-01)', 'C305 - Compras: 1 (2023-09-18)', 'C306 - Compras: 2 (2023-10-20, 2023-11-02)']
-    };
-
-    const alternates = details[code] || ['No tiene códigos alternos'];
-    const html = `
-        <p><strong>Código Madre:</strong> ${code}</p>
-        <p><strong>Fecha Última Compra:</strong> 2023-10-15</p>
-        <p><strong>Continuidad:</strong> Buena continuidad</p>
-        <p class="mt-4"><strong>Códigos Alternos:</strong></p>
-        <ul class="list-disc pl-5 mt-2">
-            ${alternates.map(a => `<li>${a}</li>`).join('')}
-        </ul>
-    `;
-    const modal = document.getElementById('detail-modal');
-    document.getElementById('modal-details').innerHTML = html;
-    if (modal) modal.style.display = 'flex';
-}
-
-// Cerrar modal
-function closeModal() {
-    const modal = document.getElementById('detail-modal');
-    if (modal) modal.style.display = 'none';
-}
-
-// Asociar código alterno
-function associateAlternateCode() {
-    const mother = document.getElementById('motherCode').value.trim();
-    const alt = document.getElementById('alternateCode').value.trim();
-    if (!mother || !alt) return alert('Complete ambos campos');
-    alert(`Código alterno "${alt}" asociado a "${mother}"`);
-    document.getElementById('motherCode').value = '';
-    document.getElementById('alternateCode').value = '';
-}
-
-// Buscar códigos
-function searchCodes() {
-    const term = document.getElementById('codeSearch').value.toLowerCase();
-    console.log(`Buscando: ${term}`);
-    // Aquí iría la lógica real de búsqueda
-}
-
-// Exportar tabla a CSV
+/**
+ * Exporta el contenido de una tabla a un archivo CSV.
+ * @param {string} tableSelector Selector CSS de la tabla.
+ * @param {string} filename Nombre del archivo a exportar.
+ */
 function exportTableToCSV(tableSelector, filename) {
     const table = document.querySelector(tableSelector);
     if (!table) return;
+
     const csv = Array.from(table.rows)
-        .map(r => Array.from(r.cells).map(c => `"${c.innerText}"`).join(','))
+        .map(row => Array.from(row.cells).map(cell => `"${cell.innerText.trim()}"`).join(','))
         .join('\n');
+    
     const blob = new Blob([csv], { type: 'text/csv' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -73,83 +36,116 @@ function exportTableToCSV(tableSelector, filename) {
     link.click();
 }
 
-// ------------------ Funciones de filtros ------------------
+// ------------------ Funciones de la Base de Datos ------------------
 
-// Filtro genérico por módulo
-function aplicarFiltros(modulo) {
-    const deptoFilter = document.getElementById(`departamento${modulo}Filter`)?.value.toLowerCase() || "";
-    const muniFilter = document.getElementById(`municipio${modulo}Filter`)?.value.toLowerCase() || "";
+let db = null; // Variable global para la base de datos
 
-    document.querySelectorAll(`#module-${modulo} tbody tr`).forEach(row => {
-        const depto = (row.dataset.departamento || "").toLowerCase();
-        const muni = row.cells[0].innerText.toLowerCase();
-        row.style.display = ((deptoFilter === "" || depto === deptoFilter) &&
-                             (muniFilter === "" || muni.includes(muniFilter))) ? "" : "none";
+/** Carga la base de datos y ejecuta las funciones de renderizado. */
+async function loadDatabaseAndRender() {
+    try {
+        const SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}` });
+        const res = await fetch('./dashboard3wh.db');
+        const buffer = await res.arrayBuffer();
+        db = new SQL.Database(new Uint8Array(buffer));
+        console.log("Base de datos cargada correctamente.");
+        // Aquí puedes llamar a las funciones para renderizar los datos
+        renderModule1Table();
+        // ... otras funciones de renderizado para los demás módulos
+    } catch (error) {
+        console.error("Error al cargar la base de datos:", error);
+    }
+}
+
+/** * Ejecuta una consulta SQL y devuelve el resultado.
+ * @param {string} query La consulta SQL.
+ * @returns {Array} Un array de objetos con los resultados.
+ */
+function executeSQL(query) {
+    if (!db) {
+        console.error("Base de datos no está cargada.");
+        return [];
+    }
+    const stmt = db.prepare(query);
+    const rows = [];
+    while (stmt.step()) {
+        rows.push(stmt.getAsObject());
+    }
+    stmt.free();
+    return rows;
+}
+
+// ------------------ Funciones de Renderizado (Ejemplos) ------------------
+
+/** * Renderiza la tabla del Módulo 1 con datos de la BD. 
+ * NOTA: Esta es una función de ejemplo, el SQL deberá ser más complejo para ser dinámico.
+ */
+function renderModule1Table() {
+    const tableBody = document.querySelector('#module-1 tbody');
+    if (!tableBody) return;
+
+    // Consulta de ejemplo para el Módulo 1 (Mercado 3WH)
+    const data = executeSQL("SELECT * FROM market_data_3wh;"); // Asume que existe esta tabla
+    
+    // Limpia la tabla existente
+    tableBody.innerHTML = ''; 
+    
+    // Agrega los datos a la tabla
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${row.municipio}</td>
+            <td>${row.mototaxis_estimados}</td>
+            <td>${row.mes_anterior}</td>
+            <td>${row.participacion_mes_anterior}</td>
+            <td>${row.mes_actual}</td>
+            <td>${row.participacion_mes_actual}</td>
+            <td>${row.recomendacion}</td>
+        `;
+        tableBody.appendChild(tr);
     });
 }
 
-// Filtro específico por clasificación de clientes (módulo 3)
-function aplicarFiltroClientes() {
-    const filtro = document.getElementById('clientePromedioFilter')?.value || "";
-    document.querySelectorAll('#module-3 tbody tr').forEach(row => {
-        row.style.display = (filtro === "" || row.dataset.clasificacion === filtro) ? "" : "none";
-    });
-}
-
-// ------------------ Base de Datos ------------------
-
-async function cargarBD() {
-    const SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}` });
-    const url = './dashboard3wh.db';
-    const res = await fetch(url);
-    const buffer = await res.arrayBuffer();
-    const db = new SQL.Database(new Uint8Array(buffer));
-
-    const resultado = db.exec("SELECT * FROM ventas LIMIT 5");
-    console.log("Resultado:", resultado);
-    document.getElementById("resultado").innerText = JSON.stringify(resultado, null, 2);
-}
-
-// ------------------ Inicialización ------------------
+// ------------------ Inicialización de Eventos ------------------
 document.addEventListener('DOMContentLoaded', () => {
-    // Pestañas
-    document.querySelectorAll('.tab-button').forEach(tab => tab.addEventListener('click', () => switchTab(tab.id)));
+    // 1. Manejo de Pestañas
+    document.querySelectorAll('.tab-button').forEach(tab => {
+        tab.addEventListener('click', () => switchTab(tab.id));
+    });
 
-    // Botones de filtros
-    ['applyFilter1','applyFilter2','applyFilter3','applyFilter4','applyFilter5'].forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) btn.addEventListener('click', () => {
-            if (id === 'applyFilter3') aplicarFiltroClientes();
-            else aplicarFiltros(parseInt(id.replace(/\D/g,'')));
+    // 2. Manejo de Filtros
+    // Aplica el filtro del Módulo 1 (3WH)
+    const applyFilter1Btn = document.getElementById('applyFilter1');
+    if (applyFilter1Btn) {
+        applyFilter1Btn.addEventListener('click', () => {
+            // Lógica de filtrado para el Módulo 1
+            console.log("Filtros del Módulo 1 aplicados.");
+            // Aquí iría el código para volver a renderizar la tabla con los filtros aplicados
+        });
+    }
+
+    // Aplica el filtro del Módulo 4.1 (Clientes Potenciales)
+    const applyFilter4_1Btn = document.getElementById('applyFilter4');
+    if (applyFilter4_1Btn) {
+        applyFilter4_1Btn.addEventListener('click', () => {
+            // Lógica de filtrado para el Módulo 4.1
+            console.log("Filtros del Módulo 4.1 aplicados.");
+            // Aquí iría el código para volver a renderizar la tabla con los filtros aplicados
+        });
+    }
+
+    // 3. Manejo de Exportación a CSV
+    document.querySelectorAll('.btn-success').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const module = e.target.closest('.module-content');
+            if (module) {
+                const tableId = `#${module.id} table`;
+                const filename = `${module.id}.csv`;
+                exportTableToCSV(tableId, filename);
+            }
         });
     });
 
-    // Buscar y asociar códigos
-    document.getElementById('searchButton')?.addEventListener('click', searchCodes);
-    document.getElementById('associateButton')?.addEventListener('click', associateAlternateCode);
-    document.getElementById('codeSearch')?.addEventListener('keypress', e => { if(e.key==='Enter') searchCodes(); });
-
-    // Exportar CSV
-    document.querySelectorAll('.btn-success').forEach((btn, i) =>
-        btn.addEventListener('click', () => exportTableToCSV(`#module-${i+1} table`, `modulo${i+1}.csv`))
-    );
-
-    // Filtro ejemplo 3WH
-    document.getElementById('municipio3WHFilter')?.addEventListener('change', function() {
-        const val = this.value.toLowerCase();
-        document.querySelectorAll('#module-1 tbody tr').forEach(row => {
-            row.style.display = (val === "" || row.cells[0].innerText.toLowerCase().includes(val)) ? "" : "none";
-        });
-    });
-
-    // Usuario simulado
-    const user = document.getElementById('userIdDisplay');
-    if(user) user.textContent = "UsuarioDemo123";
-
-    // Activar primera pestaña
-    const firstTab = document.querySelector('.tab-button');
-    if(firstTab) switchTab(firstTab.id);
-
-    // Cargar BD
-    cargarBD();
+    // 4. Carga inicial de la BD y del Dashboard
+    loadDatabaseAndRender();
+    switchTab('tab-1'); // Muestra el primer módulo al cargar la página
 });
