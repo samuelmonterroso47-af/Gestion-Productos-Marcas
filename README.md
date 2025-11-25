@@ -21,7 +21,3 @@ Este proyecto es un módulo de evaluación de mercado para mototaxis (3WH) que u
 
 Simplemente abre el archivo `index.html` en un navegador web. La aplicación se conectará automáticamente a la base de datos de Firebase para cargar y mostrar la información.
 
-## Autor
-
--   [Tu Nombre]
--   [Tu Perfil de GitHub](https://github.com/tu-usuario)
