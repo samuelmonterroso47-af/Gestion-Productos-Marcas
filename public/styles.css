@@ -550,6 +550,8 @@ body {
 .positive { color: #27ae60; font-weight: 600; }
 .warning { color: #f39c12; font-weight: 600; }
 
+.table-status { min-height: 20px; margin: 8px 0; font-size: 0.9rem; }
+
 /* ---------------- Animaciones ---------------- */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
