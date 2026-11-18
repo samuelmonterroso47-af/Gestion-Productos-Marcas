@@ -1,581 +1,127 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Ventas Modular</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inteligencia Comercial 2WH · 3WH</title>
+<meta name="description" content="Evaluación de mercado de motos y mototaxis por municipio, seguimiento de clientes, recuperación de marcas y códigos, y oportunidades de promoción.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <div class="dashboard-container">
-        <div class="dashboard-header">
-            <h1><i class="fas fa-chart-line"></i> Dashboard de Ventas</h1>
-            <div class="user-badge">
-                <i class="fas fa-user-circle"></i>
-                <span id="userIdDisplay">UsuarioDemo123</span>
-            </div>
-        </div>
+<header class="top">
+  <div class="brand">
+    <div class="brand-title">Inteligencia Comercial <span>2WH · 3WH</span></div>
+    <div class="brand-sub">Mercado, clientes y oportunidades por municipio · Guatemala</div>
+  </div>
+  <div class="tag">Demo · flota real INE, ventas ficticias</div>
+</header>
 
+<nav class="tabs" role="tablist">
+  <button class="tab active" data-mod="m1">Mercado 3WH</button>
+  <button class="tab" data-mod="m2">Mercado 2WH</button>
+  <button class="tab" data-mod="m3">Clientes</button>
+  <button class="tab" data-mod="m4">Recuperación de marcas</button>
+  <button class="tab" data-mod="m5">Recuperación de códigos</button>
+  <button class="tab" data-mod="m6">Oportunidades de promoción</button>
+</nav>
 
-        <div class="tabs-container">
-    <button id="tab-1" class="tab-button active">
-        <i class="fas fa-motorcycle"></i> Mercado 3WH
-    </button>
-    <button id="tab-2" class="tab-button">
-        <i class="fas fa-bicycle"></i> Mercado 2WH
-    </button>
-    <button id="tab-3" class="tab-button">
-        <i class="fas fa-users"></i> Promedios Clientes
-    </button>
-    <button id="tab-4" class="tab-button">
-        <i class="fas fa-tags"></i> Recuperación Marcas
-    </button>
-    <button id="tab-5" class="tab-button">
-    <i class="fas fa-barcode"></i> Recuperación Códigos
-    </button>
-    <button id="tab-6" class="tab-button">
-    <i class="fas fa-bullhorn"></i> Oportunidades de Promoción
-</button>
-
-</div>
-
-
-        <!-- Módulo 1: Evaluación 3WH -->
-         
-<div id="module-1" class="module-content active">
-    <div class="module-header">
-        <h2><i class="fas fa-motorcycle"></i> Evaluación de Mercado (3WH Mototaxis)</h2>
+<main>
+  <!-- 1. Mercado 3WH -->
+  <section id="m1" class="mod active">
+    <h1>Evaluación de mercado · mototaxis (3WH)</h1>
+    <p class="lead">Participación = venta del mes ÷ (flota de mototaxis × gasto mensual por unidad). La flota es el registro público del parque vehicular.</p>
+    <div class="filters">
+      <label>Departamento<select id="m1-depto"></select></label>
+      <label>Participación baja bajo (%)<input id="m1-umbral" type="number" value="10" min="0" max="100"></label>
+      <label>Gasto mensual por mototaxi (Q)<input id="m1-gasto" type="number" value="150" min="1"></label>
+      <label>Buscar municipio<input id="m1-buscar" type="search" placeholder="Ej. Coatepeque"></label>
     </div>
-    
-    <div class="filter-section">
-        <div class="filter-group">
-            <label>Participación Baja (%):</label>
-            <input type="number" id="marketShareThreshold" value="10" class="filter-input">
-        </div>
+    <div class="kpis" id="m1-kpis"></div>
+    <div class="table-head"><span id="m1-count"></span><button class="btn" data-csv="m1">Exportar CSV</button></div>
+    <div class="table-wrap"><table id="m1-tabla"></table></div>
+  </section>
 
-        <div class="filter-group">
-            <label>Departamento:</label>
-            <select id="departamento3WHFilter" class="filter-select">
-                <option value="">Todos</option>
-                <option>Quetzaltenango</option>
-                <option>Huehuetenango</option>
-                <option>Alta Verapaz</option>
-            </select>
-        </div>
-        
-        <div class="filter-group">
-            <label>Municipio:</label>
-            <select id="municipio3WHFilter" class="filter-select">
-                <option value="">Todos</option>
-                <option>Quetzaltenango</option>
-                <option>Huehuetenango</option>
-                <option>Cobán</option>
-            </select>
-        </div>
-        
-        <button id="applyFilter1" class="btn btn-primary">
-            <i class="fas fa-filter"></i> Aplicar Filtros
-        </button>
+  <!-- 2. Mercado 2WH -->
+  <section id="m2" class="mod">
+    <h1>Evaluación de mercado · motos (2WH)</h1>
+    <p class="lead">Compara la venta del mes contra el promedio del municipio y señala dónde el mercado está por debajo de lo normal.</p>
+    <div class="filters">
+      <label>Departamento<select id="m2-depto"></select></label>
+      <label>Estado<select id="m2-estado"><option>Todos</option><option>Promover / crecer</option><option>Bajo promedio</option><option>Normal</option><option>Sobre promedio</option></select></label>
+      <label>Buscar municipio<input id="m2-buscar" type="search" placeholder="Ej. Mixco"></label>
     </div>
-    
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Municipio</th>
-                <th>Mototaxis Estimados</th>
-                <th>Mes Anterior</th>
-                <th>Participación % Mes Anterior</th>
-                <th>Mes Actual</th>
-                <th>Participación % Mes Actual</th>
-                <th>Recomendación</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr data-departamento="Quetzaltenango">
-                <td>Quetzaltenango</td>
-                <td>1,500</td>
-                <td>$450,000</td>
-                <td>30%</td>
-                <td>$500,000</td>
-                <td>33.33%</td>
-                <td>Mantener / Expandir</td>
-            </tr>
-            <tr data-departamento="Huehuetenango">
-                <td>Huehuetenango</td>
-                <td>2,000</td>
-                <td>$780,000</td>
-                <td>39%</td>
-                <td>$800,000</td>
-                <td>40%</td>
-                <td>Mantener / Expandir</td>
-            </tr>
-            <tr data-departamento="Alta Verapaz">
-                <td>Cobán</td>
-                <td>1,000</td>
-                <td>$90,000</td>
-                <td>9%</td>
-                <td>$100,000</td>
-                <td class="highlight">10%</td>
-                <td class="highlight">Enfocar en este municipio</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <button class="btn btn-success">
-        <i class="fas fa-file-export"></i> Exportar a CSV
-    </button>
-</div>
+    <div class="kpis" id="m2-kpis"></div>
+    <div class="table-head"><span id="m2-count"></span><button class="btn" data-csv="m2">Exportar CSV</button></div>
+    <div class="table-wrap"><table id="m2-tabla"></table></div>
+  </section>
 
-
-
-        <!-- Módulo 2: Evaluación 2WH -->
-
-<div id="module-2" class="module-content">
-    <div class="module-header">
-        <h2><i class="fas fa-bicycle"></i> Evaluación de Mercado (2WH)</h2>
+  <!-- 3. Clientes -->
+  <section id="m3" class="mod">
+    <h1>Promedios y tendencia de clientes</h1>
+    <p class="lead">Mes actual contra el promedio de 3 y 6 meses. Haz clic en una tarjeta para filtrar.</p>
+    <div class="kpis clickable" id="m3-kpis"></div>
+    <div class="filters">
+      <label>Segmento<select id="m3-seg"><option>Todos</option><option>Sin compra</option><option>Nuevo</option><option>En riesgo</option><option>Top</option><option>Estable</option></select></label>
+      <label>Departamento<select id="m3-depto"></select></label>
     </div>
-    
-    <div class="filter-section">
-        <div class="filter-group">
-            <label>Departamento:</label>
-            <select id="departamento2WHFilter" class="filter-select">
-                <option value="">Todos</option>
-                <option>Quetzaltenango</option>
-                <option>Huehuetenango</option>
-                <option>Alta Verapaz</option>
-            </select>
-        </div>
+    <div class="table-head"><span id="m3-count"></span><button class="btn" data-csv="m3">Exportar CSV</button></div>
+    <div class="table-wrap"><table id="m3-tabla"></table></div>
+  </section>
 
-        <div class="filter-group">
-            <label>Municipio:</label>
-            <select id="municipio2WHFilter" class="filter-select">
-                <option value="">Todos</option>
-                <option>Quetzaltenango</option>
-                <option>Huehuetenango</option>
-                <option>Cobán</option>
-            </select>
-        </div>
-        
-        <button id="applyFilter2" class="btn btn-primary">
-            <i class="fas fa-filter"></i> Aplicar Filtros
-        </button>
+  <!-- 4. Recuperación de marcas -->
+  <section id="m4" class="mod">
+    <h1>Recuperación de marcas</h1>
+    <p class="lead">Días desde la última compra de cada marca por cliente. Se marca en alerta o crítico según los umbrales que elijas.</p>
+    <div class="filters">
+      <label>Cliente<select id="m4-cliente"></select></label>
+      <label>Marca<select id="m4-marca"></select></label>
+      <label>Estado<select id="m4-estado"><option>Todos</option><option>Crítico</option><option>Alerta</option><option>Normal</option></select></label>
+      <label>Alerta desde (días)<input id="m4-alerta" type="number" value="60" min="1"></label>
+      <label>Crítico desde (días)<input id="m4-critico" type="number" value="120" min="1"></label>
     </div>
-    
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Municipio</th>
-                <th>Mes Actual</th>
-                <th>Ventas Promedio</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr data-departamento="Quetzaltenango">
-                <td>Quetzaltenango</td>
-                <td>$14,000</td>
-                <td>$12,500</td>
-                <td class="positive">Normal</td>
-            </tr>
-            <tr data-departamento="Huehuetenango">
-                <td>Huehuetenango</td>
-                <td>$13,000</td>
-                <td>$15,800</td>
-                <td class="highlight">Mercado bajo promedio</td>
-            </tr>
-            <tr data-departamento="Alta Verapaz">
-                <td>Cobán</td>
-                <td>$7,500</td>
-                <td>$9,800</td>
-                <td class="warning">Promover / Crecer</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <button class="btn btn-success">
-        <i class="fas fa-file-export"></i> Exportar a CSV
-    </button>
-</div>
+    <div class="kpis" id="m4-kpis"></div>
+    <div class="table-head"><span id="m4-count"></span><button class="btn" data-csv="m4">Exportar CSV</button></div>
+    <div class="table-wrap"><table id="m4-tabla"></table></div>
+  </section>
 
-        
-        <!-- Módulo 3: Promedios de Clientes -->
-
-<div id="module-3" class="module-content">
-    <div class="module-header">
-        <h2><i class="fas fa-users"></i> Promedios de Clientes</h2>
+  <!-- 5. Recuperación de códigos -->
+  <section id="m5" class="mod">
+    <h1>Recuperación de códigos</h1>
+    <p class="lead">Asocia códigos equivalentes o sustitutos: si el cliente compró cualquiera de ellos, el código cuenta como recuperado.</p>
+    <form class="filters assoc" id="m5-form">
+      <label>Código principal<select id="m5-principal"></select></label>
+      <label>Código relacionado<select id="m5-relacionado"></select></label>
+      <button class="btn primary" type="submit">Asociar</button>
+      <button class="btn" type="button" id="m5-reset">Restablecer asociaciones</button>
+    </form>
+    <div class="filters">
+      <label>Cliente<select id="m5-cliente"></select></label>
+      <label>Código<select id="m5-codigo"></select></label>
+      <label>Estado<select id="m5-estado"><option>Todos</option><option>Pendiente</option><option>Recuperado</option><option>Activo</option></select></label>
     </div>
-    
-    <!-- Tarjetas de resumen -->
-    <div class="stats-container">
-        <div class="stat-card">
-            <div class="stat-icon" style="color: #f72585;">
-                <i class="fas fa-user-times"></i>
-            </div>
-            <div class="stat-value">5</div>
-            <div class="stat-label">Clientes sin compra</div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon" style="color: #4cc9f0;">
-                <i class="fas fa-user-plus"></i>
-            </div>
-            <div class="stat-value">3</div>
-            <div class="stat-label">Clientes nuevos</div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon" style="color: #f97316;">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <div class="stat-value">8</div>
-            <div class="stat-label">Clientes en riesgo</div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon" style="color: #4361ee;">
-                <i class="fas fa-star"></i>
-            </div>
-            <div class="stat-value">4</div>
-            <div class="stat-label">Clientes top</div>
-        </div>
+    <div class="table-head"><span id="m5-count"></span><button class="btn" data-csv="m5">Exportar CSV</button></div>
+    <div class="table-wrap"><table id="m5-tabla"></table></div>
+  </section>
+
+  <!-- 6. Oportunidades -->
+  <section id="m6" class="mod">
+    <h1>Oportunidades de promoción</h1>
+    <p class="lead">Marcas que cada cliente nunca ha comprado, con la acción recomendada según su perfil.</p>
+    <div class="filters">
+      <label>Cliente<select id="m6-cliente"></select></label>
+      <label>Marca<select id="m6-marca"></select></label>
+      <label>Acción<select id="m6-accion"><option>Todas</option></select></label>
     </div>
-    
-    <!-- Filtro -->
-    <div class="filter-section">
-        <div class="filter-group">
-            <label>Cliente:</label>
-            <select id="clientePromedioFilter" class="filter-select">
-                <option value="">Todos</option>
-                <option value="sin-compra">Clientes sin compra</option>
-                <option value="nuevo">Clientes nuevos</option>
-                <option value="riesgo">Clientes en riesgo</option>
-                <option value="top">Clientes top</option>
-            </select>
-        </div>
-        
-        <button class="btn btn-primary" id="applyFilter3">
-            <i class="fas fa-filter"></i> Aplicar Filtros
-        </button>
-    </div>
-    
-    <!-- Tabla -->
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Cliente</th>
-                <th>Mes Actual</th>
-                <th>Promedio 6 meses</th>
-                <th>Promedio 3 meses</th>
-                <th>Tendencia</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr data-clasificacion="nuevo">
-                <td>Cliente 1</td>
-                <td>$55,000</td>
-                <td>$70,000</td>
-                <td>$60,000</td>
-                <td class="highlight">A la baja</td>
-            </tr>
-            <tr data-clasificacion="top">
-                <td>Cliente 2</td>
-                <td>$125,000</td>
-                <td>$110,000</td>
-                <td>$120,000</td>
-                <td class="positive">En aumento</td>
-            </tr>
-            <tr data-clasificacion="riesgo">
-                <td>Cliente 3</td>
-                <td>$11,500</td>
-                <td>$20,000</td>
-                <td>$15,000</td>
-                <td class="highlight">A la baja</td>
-            </tr>
-            <tr data-clasificacion="sin-compra">
-                <td>Cliente 4</td>
-                <td>$0</td>
-                <td>$5,000</td>
-                <td>$4,500</td>
-                <td class="highlight">Sin compra</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <button class="btn btn-success">
-        <i class="fas fa-file-export"></i> Exportar a CSV
-    </button>
-</div>
+    <div class="kpis" id="m6-kpis"></div>
+    <div class="table-head"><span id="m6-count"></span><button class="btn" data-csv="m6">Exportar CSV</button></div>
+    <div class="table-wrap"><table id="m6-tabla"></table></div>
+  </section>
+</main>
 
-       
-
-        <!-- Módulo 4: Recuperación de Marcas -->
-
-        <div id="module-4" class="module-content">
-            <div class="module-header">
-                <h2><i class="fas fa-tags"></i> Recuperación de Marcas</h2>
-            </div>
-            
-            <div class="filter-section">
-                <div class="filter-group">
-                    <label>Cliente:</label>
-                    <select id="clienteMarcaFilter" class="filter-select">
-                        <option value="">Todos</option>
-                        <option>Cliente 1</option>
-                        <option>Cliente 2</option>
-                        <option>Cliente 3</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <label>Marca:</label>
-                    <select id="marcaFilter" class="filter-select">
-                        <option value="">Todas</option>
-                        <option>GTS</option>
-                        <option>CEAT</option>
-                        <option>LIYANG</option>
-                    </select>
-                </div>
-                
-                <button class="btn btn-primary">
-                    <i class="fas fa-filter"></i> Aplicar Filtros
-                </button>
-            </div>
-            
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Cliente</th>
-                        <th>Marca</th>
-                        <th>Última Compra</th>
-                        <th>Días Transcurridos</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Cliente 1</td>
-                        <td>GTS</td>
-                        <td>2025-05-20</td>
-                        <td>120</td>
-                        <td class="highlight">Crítico</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>LIYANG</td>
-                        <td>2025-03-20</td>
-                        <td>180</td>
-                        <td class="highlight">Crítico</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>KOLBEN</td>
-                        <td>2025-06-25</td>
-                        <td>85</td>
-                        <td class="warning">Alerta</td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 2</td>
-                        <td>MTP</td>
-                        <td>2025-07-15</td>
-                        <td>15</td>
-                        <td class="positive">Normal</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <button class="btn btn-success">
-                <i class="fas fa-file-export"></i> Exportar a CSV
-            </button>
-        </div>
-
-
-
-<!-- Módulo 5: Recuperación de Códigos -->
-
-<div id="module-5" class="module-content">
-    <div class="module-header">
-        <h2><i class="fas fa-bullhorn"></i> Recuperación de Códigos</h2>
-    </div>
-    
-    <!-- Asociar códigos -->
-    <div class="code-association">
-        <h3><i class="fas fa-link"></i> Asociar Códigos</h3>
-        <div class="filter-section">
-            <div class="filter-group">
-                <label>Código Principal:</label>
-                <input type="text" class="filter-input" placeholder="Ej: A101">
-            </div>
-            
-            <div class="filter-group">
-                <label>Código Relacionado:</label>
-                <input type="text" class="filter-input" placeholder="Ej: A102">
-            </div>
-            
-            <button class="btn btn-primary">
-                <i class="fas fa-link"></i> Asociar
-            </button>
-        </div>
-    </div>
-    
-    <!-- Filtros -->
-    <div class="filter-section">
-        <div class="filter-group">
-            <label>Cliente:</label>
-            <select id="clienteCodigoFilter" class="filter-select">
-                <option value="">Todos</option>
-                <option>Cliente 1</option>
-                <option>Cliente 2</option>
-                <option>Cliente 3</option>
-            </select>
-        </div>
-        
-        <div class="filter-group">
-            <label>Código:</label>
-            <select id="codigoFilter" class="filter-select">
-                <option value="">Todos</option>
-                <option>A101</option>
-                <option>B202</option>
-                <option>C303</option>
-            </select>
-        </div>
-        
-        <button class="btn btn-primary" id="applyFilter5">
-            <i class="fas fa-filter"></i> Aplicar Filtros
-        </button>
-    </div>
-    
-    <!-- Tabla -->
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Cliente</th>
-                <th>Código</th>
-                <th>Códigos Relacionados</th>
-                <th>Última Compra</th>
-                <th>Días Transcurridos</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Cliente 1</td>
-                <td>A101</td>
-                <td>A102, A103</td>
-                <td>2023-11-20</td>
-                <td>30</td>
-                <td class="positive">Recuperado</td>
-            </tr>
-            <tr>
-                <td>Cliente 2</td>
-                <td>B202</td>
-                <td>B203</td>
-                <td>2023-09-15</td>
-                <td>90</td>
-                <td class="positive">Recuperado</td>
-            </tr>
-            <tr>
-                <td>Cliente 3</td>
-                <td>C303</td>
-                <td>C304, C305</td>
-                <td>2023-03-20</td>
-                <td>180</td>
-                <td class="highlight">Pendiente</td>
-            </tr>
-            <tr>
-                <td>Cliente 4</td>
-                <td>D404</td>
-                <td>D405</td>
-                <td>No comprado</td>
-                <td>-</td>
-                <td class="highlight">Pendiente</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <button class="btn btn-success">
-        <i class="fas fa-file-export"></i> Exportar a CSV
-    </button>
-</div>        
-
-<!-- Módulo 6: Oportunidades de Marca -->
- 
-<div id="module-6" class="module-content">
-    <div class="module-header">
-        <h2><i class="fas fa-barcode"></i> Oportunidades de Promoción</h2>
-    </div>
-
-    <!-- Filtros -->
-    <div class="filter-section">
-        <div class="filter-group">
-            <label>Cliente:</label>
-            <select id="clienteMarcaFilter" class="filter-select">
-                <option value="">Todos</option>
-                <option>Cliente 1</option>
-                <option>Cliente 2</option>
-                <option>Cliente 3</option>
-            </select>
-        </div>
-
-        <div class="filter-group">
-            <label>Marca:</label>
-            <select id="marcaPromoFilter" class="filter-select">
-                <option value="">Todas</option>
-                <option>Marca A</option>
-                <option>Marca B</option>
-                <option>Marca C</option>
-            </select>
-        </div>
-
-        <button class="btn btn-primary" id="applyFilter6">
-            <i class="fas fa-filter"></i> Aplicar Filtros
-        </button>
-    </div>
-
-    <!-- Tabla -->
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Cliente</th>
-                <th>Marca</th>
-                <th>Estado</th>
-                <th>Acción Recomendada</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Cliente 1</td>
-                <td>Marca A</td>
-                <td class="highlight">Nunca comprado</td>
-                <td>Ofrecer combo de bienvenida</td>
-            </tr>
-            <tr>
-                <td>Cliente 2</td>
-                <td>Marca B</td>
-                <td class="highlight">Nunca comprado</td>
-                <td>Enviar catálogo y descuentos</td>
-            </tr>
-            <tr>
-                <td>Cliente 3</td>
-                <td>Marca C</td>
-                <td class="highlight">Nunca comprado</td>
-                <td>Campaña de capacitación</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <button class="btn btn-success">
-        <i class="fas fa-file-export"></i> Exportar a CSV
-    </button>
-</div>
-
-
-    </div>
- <!-- sql.js desde CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
- <!-- app.js --> 
-<script src="assets/js/app.js"></script>
+<footer id="nota"></footer>
+<script src="assets/js/app.js" type="module"></script>
 </body>
 </html>
-

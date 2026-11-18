@@ -1,41 +1,47 @@
-# Evaluación de Mercado (3WH)
+# Inteligencia Comercial 2WH · 3WH
 
-Este proyecto es un módulo de evaluación de mercado para mototaxis (3WH) que utiliza datos de ventas y estimaciones de la flota para calcular la participación de mercado por municipio. La aplicación proporciona recomendaciones estratégicas basadas en la participación de mercado para guiar las decisiones de negocio.
+Aplicación web para decidir **dónde crecer y a quién atender primero** en la venta de repuestos para motos (2WH) y mototaxis (3WH) en Guatemala.
 
-## Características
+Cruza la **flota real** de cada municipio (registro público del parque vehicular, INE/SAT) con la venta, los clientes y sus compras por marca y código.
 
--   Visualización de datos de participación de mercado.
--   Filtros dinámicos por municipio.
--   Recomendaciones automáticas basadas en umbrales de participación.
--   Opción de exportar los datos a formato CSV.
+> Demo: la flota es dato público real; ventas, clientes, marcas y códigos son **ficticios**.
 
-## Tecnologías Utilizadas
+## Módulos
 
--   HTML
--   Tailwind CSS
--   JavaScript (ESM)
+| Módulo | Qué responde |
+|---|---|
+| **Mercado 3WH** | Participación de mercado por municipio = venta ÷ (mototaxis × gasto mensual por unidad). Umbral y gasto editables; recomendación automática: *enfocar*, *recuperar* o *mantener / expandir*. |
+| **Mercado 2WH** | Venta del mes contra el promedio del municipio y venta por moto registrada. |
+| **Clientes** | Mes actual vs. promedio de 3 y 6 meses; segmentos *sin compra*, *nuevo*, *en riesgo* y *top 20 %*. |
+| **Recuperación de marcas** | Días desde la última compra de cada marca por cliente, con umbrales de alerta y crítico editables. |
+| **Recuperación de códigos** | Asocia códigos equivalentes o sustitutos: si el cliente compró cualquiera, el código cuenta como recuperado. Las asociaciones se guardan en el navegador. |
+| **Oportunidades de promoción** | Marcas que cada cliente nunca ha comprado, con la acción recomendada según su perfil. |
 
-## Estructura del proyecto
+Todas las tablas se filtran, se ordenan con un clic en el encabezado y se exportan a CSV.
 
-```
-.
-├── index.html          # Punto de entrada de la aplicación
-├── assets/
-│   ├── css/
-│   │   └── styles.css  # Estilos del dashboard
-│   └── js/
-│       └── app.js      # Lógica de pestañas y filtros
-└── data/
-    └── dashboard3wh.db # Datos de referencia del módulo 3WH
-```
+## Tecnología
 
-## Cómo ejecutar el proyecto
+- HTML, CSS y JavaScript (módulos ES), sin dependencias ni compilación.
+- `data/datos.json`, generado con `tools/generar_datos.py` (Python) a partir del parque vehicular.
 
-Al ser una aplicación estática (HTML, CSS y JS), no requiere instalación de dependencias:
+## Cómo ejecutarlo
 
-1. Clona el repositorio.
-2. Abre `index.html` directamente en tu navegador, o sírvelo con un servidor local, por ejemplo:
+Necesita un servidor local (el navegador no permite leer `datos.json` con doble clic):
 
 ```bash
 npx serve .
+```
+
+o
+
+```bash
+python -m http.server 8000
+```
+
+y abrir `http://localhost:8000`.
+
+## Regenerar los datos
+
+```bash
+python tools/generar_datos.py ruta/a/parque-vehicular.json
 ```
